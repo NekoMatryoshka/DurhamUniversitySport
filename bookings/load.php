@@ -1,12 +1,8 @@
 <?php
 
-
 require '../DB/DB_Connection.php';
 
-
 $query = "SELECT * FROM bookings";
-
-
 
 $data = array();
 $statement = $connect->prepare($query);
@@ -17,7 +13,7 @@ foreach($result as $row)
 	$data[] = array(
 	'id' => $row["id"],
 	'f_id' => $row["f_id"],
-	'title' => $row["name"],
+	'title' => $row["m_name"],
 	'start' => $row["start_time"],
 	'end' => $row["end_time"]
 	);
