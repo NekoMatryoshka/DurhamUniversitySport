@@ -25,7 +25,8 @@
 				if($row['password'] == $password)
 				{
 			
-					$_SESSION['id'] = $row['m_id'];
+					$_SESSION['id'] = $row['id'];
+					$_SESSION['m_id'] = $row['m_id'];
 					$_SESSION['type'] = $row['type'];
 					echo "success";	
 				}
