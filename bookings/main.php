@@ -71,9 +71,11 @@ if(!isset($_SESSION["id"]))
 					{
 						$('#modal').modal('show');
 						$('#date').val(date.format());
-						var id = '<?php echo $_SESSION['id']?>';
-						$('#name').val(id);
-						$('#m_id').val(id);
+						var m_id = '<?php echo $_SESSION['id']?>';
+						var m_name = '<?php echo $_SESSION['m_id']?>';
+						$('#m_id').val(m_id);
+						$('#m_dname').val(m_name);
+						$('#m_name').val(m_name);
 						cdate = date.format();			 
 					}
 				},
@@ -103,17 +105,19 @@ if(!isset($_SESSION["id"]))
 			$('#bookButton').click(function(e){
 			    e.preventDefault();
 			    
-				var name = $('#name').val(); 
+			    var m_id = $('#m_id').val(); 
+				var m_name = $('#m_name').val(); 
 				var f_id = $('#f_id').val();
 				var f_name = $('#f_name').val();
 				var start_time = cdate +" "+$('#start_time').val();
 				var end_time = cdate +" "+ $('#end_time').val();
-
+			
 				$.ajax({  
             		url:"insert.php",  
     	   	   	 	method:"POST",  
                 	data:{
-                		name:name,
+                		m_id:m_id,
+                		m_name:m_name,
                 		f_id:f_id,
                 		f_name:f_name,
                		 	start_time:start_time,
@@ -188,7 +192,7 @@ if(!isset($_SESSION["id"]))
 					{?>
 					
 					<li class="nav-item">
-						<?php echo "<span class='navbar-text' style='color:white'> ID: ".$_SESSION["id"]." Type: ".$_SESSION["type"]."&nbsp;&nbsp;</span>"; ?>
+						<?php echo "<span class='navbar-text' style='color:white'> ID: ".$_SESSION["m_id"]." Type: ".$_SESSION["type"]."&nbsp;&nbsp;</span>"; ?>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="../login/logout.php" style='color:white'>Logout</a>
@@ -237,8 +241,9 @@ if(!isset($_SESSION["id"]))
 					  </div>
 					  <div class="form-group">
 						<label class="col-form-label">ID</label>
-						<input type="hidden" class="form-control" id="name" name="name">
-						<input type="text" class="form-control" id="m_id" name="m_id" disabled>  
+						<input type="hidden" class="form-control" id="m_id" name="m_id">
+						<input type="hidden" class="form-control" id="m_name" name="m_name">
+						<input type="text" class="form-control" id="m_dname" name="m_dname" disabled>   
 					  </div>
 					  <div class="form-group">
 						<label class="col-form-label">Facility</label>
@@ -299,7 +304,7 @@ if(!isset($_SESSION["id"]))
 		<!-- footer -->
 		<nav class="navbar navbar-dark text-right" style="background-color:#742F68;">
 			<div class="col-12">
-				<span class="navbar-text text-white">Â© 2019 DUS - Group9</span>
+				<span class="navbar-text text-white">© 2019 DUS - Group9</span>
 			</div>
 		</nav>
 		
