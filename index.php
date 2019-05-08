@@ -207,7 +207,7 @@
 						<a class="nav-link" href="">Home</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="./bookings/main.php">Booking</a>
+						<a class="nav-link" href="./bookings/main.php">Bookings</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="./members/main.php">Members</a>
@@ -339,7 +339,7 @@
 						
 								<div class="form-row">
 									<div class="col">
-										<label class="col-form-label">Price(Â£) per hour</label>
+										<label class="col-form-label">Price(£) per hour</label>
 										<input type="text" class="form-control" id="price" name="price" maxlength="10" placeholder="number">
 									</div>
 									<div class="col">
@@ -421,7 +421,7 @@
 	    <!-- footer -->
 		<nav class="navbar navbar-dark text-right" style="background-color:#742F68;">
 			<div class="col-12">
-				<span class="navbar-text text-white">Â© 2019 DUS - Group9</span>
+				<span class="navbar-text text-white">© 2019 DUS - Group9</span>
 			</div>
 		</nav>
 
