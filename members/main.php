@@ -185,7 +185,7 @@ if(!isset($_SESSION["id"]))
 					{?>
 					
 					<li class="nav-item">
-						<?php echo "<span class='navbar-text' style='color:white'> ID: ".$_SESSION["id"]." Type: ".$_SESSION["type"]."&nbsp;&nbsp;</span>"; ?>
+						<?php echo "<span class='navbar-text' style='color:white'> ID: ".$_SESSION["m_id"]." Type: ".$_SESSION["type"]."&nbsp;&nbsp;</span>"; ?>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="../login/logout.php" style='color:white'>Logout</a>
@@ -302,7 +302,7 @@ if(!isset($_SESSION["id"]))
 		<!-- footer -->
 		<nav class="navbar navbar-dark text-right" style="background-color:#742F68;">
 			<div class="col-12">
-				<span class="navbar-text text-white">Â© 2019 DUS - Group9</span>
+				<span class="navbar-text text-white">© 2019 DUS - Group9</span>
 			</div>
 		</nav>
 
