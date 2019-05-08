@@ -70,9 +70,41 @@
 	
 		$('#sign_up').click(function(){
 			
-			alert("sign_up");
+			$('#modal_sign_up').modal('show');
 			
 		});
+		
+		
+		
+		$('#submit_sign_up').click(function(){
+			
+			var id = $('#id_sign_up').val();
+			var password = $('#password_sign_up').val();
+			var name = $('#name_sign_up').val();
+			var email = $('#email_sign_up').val();
+			var tel = $('#tel_sign_up').val();
+			
+			$.ajax({
+					url: "./login/signup_check.php",
+					method: "POST",
+					data: {id:id, password:password, name:name, email:email, tel:tel},
+					success: function(data){
+						if(data == "success")
+						{
+							 alert("Your account is successfully created");
+							 window.location.href= "/DUS/index.php";
+						}
+						else
+						{
+								alert("Your ID alreay exists");
+								$('#id_sign_up').val("");
+						}			
+					}
+			});
+			
+			
+		});
+		
 		
 		
 		$('#search').keyup(function(){
@@ -230,7 +262,7 @@
 					{?>
 					
 					<li class="nav-item">
-						<?php echo "<span class='navbar-text' style='color:white'> ID: ".$_SESSION["id"]." Type: ".$_SESSION["type"]."&nbsp;&nbsp;</span>"; ?>
+						<?php echo "<span class='navbar-text' style='color:white'> ID: ".$_SESSION["m_id"]." Type: ".$_SESSION["type"]."&nbsp;&nbsp;</span>"; ?>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="./login/logout.php" style='color:white'>Logout</a>
@@ -388,7 +420,7 @@
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="modal_title">Sign In</h5>
+								<h5 class="modal-title" id="modal_title">Login</h5>
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 								</button>
@@ -414,7 +446,55 @@
 						</div>
 					</div>
 				</div>	
-		
+			<!-- mdoal sign up -->
+			
+			<div class="modal fade" id="modal_sign_up" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="modal_title">Sign Up</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+						
+									<div class="form-group">
+										<label class="col-form-label">ID</label>
+										<input type="text" class="form-control" id="id_sign_up" maxlength="50" placeholder="ID"/>
+									</div>
+					
+									<div class="form-group">
+										<label class="col-form-label">Password</label>
+										<input type="text" class="form-control" id="password_sign_up" maxlength="50" placeholder="Password"/>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-form-label">Name</label>
+										<input type="text" class="form-control" id="name_sign_up" maxlength="50" placeholder="Name"/>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-form-label">Email</label>
+										<input type="text" class="form-control" id="email_sign_up" maxlength="50" placeholder="Email"/>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-form-label">Tel</label>
+										<input type="text" class="form-control" id="tel_sign_up" maxlength="50" placeholder="Phone Number"/>
+									</div>
+						
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										<button type="button" id="submit_sign_up" class="btn btn-primary">Submit</button>
+									</div>
+							
+							</div>
+						</div>
+					</div>
+				</div>	
+			
+			
 		</div>
 		<!-- contents end -->
 	    
