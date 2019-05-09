@@ -12,14 +12,9 @@
 	{
 		foreach($result as $row)
 		{
-			//$output .= '<option value="'.$row["id"].'|'.$row["name"].'">'.$row["name"].'</option>';
 			$output .= '<option value="'.$row["id"].'">'.$row["name"].'</option>';
 		}
 	}
 	$output.='</select>';
 	echo $output;
 ?>
-
-
-
-			
