@@ -20,10 +20,12 @@
 	
 		else
 		{
-
+			
+			$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+			
 			$query ="
 			INSERT INTO members (m_id, password, name, email, tel)
-			VALUES ('".$_POST['id']."','".$_POST['password']."','".$_POST['name']."','".$_POST['email']."','".$_POST['tel']."')
+			VALUES ('".$_POST['id']."','".$password."','".$_POST['name']."','".$_POST['email']."','".$_POST['tel']."')
 			";
 	
 			$statement = $connect->prepare($query);
