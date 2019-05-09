@@ -21,10 +21,9 @@
 			
 			foreach($result as $row)
 			{
-		
-				if($row['password'] == $password)
+				if(password_verify($password, $row['password']))
 				{
-			
+					
 					$_SESSION['id'] = $row['id'];
 					$_SESSION['m_id'] = $row['m_id'];
 					$_SESSION['type'] = $row['type'];
