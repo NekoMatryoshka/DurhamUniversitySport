@@ -19,11 +19,8 @@ if(!isset($_SESSION["id"]))
 		<title>DUS - Members</title>
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
 
 		<script>
 		$(document).ready(function(){ 
@@ -110,7 +107,7 @@ if(!isset($_SESSION["id"]))
 						
 						$("#id").val(id);
 						$('#m_id').val(data.m_id);
-						$('#password').val(data.password);
+						$('#password').val("");
 						$('#name').val(data.name);
 						$('#email').val(data.email);
 						$('#tel').val(data.tel);
@@ -198,7 +195,7 @@ if(!isset($_SESSION["id"]))
 		
 		<!-- contents -->
 		<div class="container-fluid">
-			<h1 class="mt-4">Facilities List</h1>
+			<h1 class="mt-4">Members List</h1>
 			<br>
 			
 			<!--search bar-->
