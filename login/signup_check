@@ -1,0 +1,38 @@
+<?php
+	
+	require '../DB/DB_Connection.php';
+	
+	if(isset($_POST["id"])) {
+	
+		$query="
+		SELECT * FROM members WHERE m_id = '".$_POST['id']."'
+		";
+	
+		$statement = $connect->prepare($query);
+		$statement->execute();
+		$result = $statement->fetchAll();
+		$total_row = $statement->rowCount();
+	
+		if($total_row > 0)
+		{
+			echo "fail";
+		} 
+	
+		else
+		{
+
+			$query ="
+			INSERT INTO members (m_id, password, name, email, tel)
+			VALUES ('".$_POST['id']."','".$_POST['password']."','".$_POST['name']."','".$_POST['email']."','".$_POST['tel']."')
+			";
+	
+			$statement = $connect->prepare($query);
+			$statement->execute();
+	
+			echo "success";
+	
+		}
+		
+	}
+	
+?>
