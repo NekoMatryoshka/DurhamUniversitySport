@@ -8,10 +8,11 @@ if(isset($_POST["action"]))
 	if($_POST["action"] == "insert")
 	{				
 		
-            
+    	$password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    	
 		$query = "
 		INSERT INTO members (m_id, password, name, email, tel) 
-		VALUES ('".$_POST["m_id"]."','".$_POST["password"]."','".$_POST["name"]."','".$_POST["email"]."'
+		VALUES ('".$_POST["m_id"]."','".$password."','".$_POST["name"]."','".$_POST["email"]."'
 		,'".$_POST["tel"]."')
 		";
 		$statement = $connect->prepare($query);
@@ -47,12 +48,12 @@ if(isset($_POST["action"]))
 	if($_POST["action"] == "update")
 	{
 	
-	
+		$password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 	
 		$query = "
 		UPDATE members
 		SET m_id= '".$_POST["m_id"]."', 
-		password = '".$_POST["password"]."',
+		password = '".$password."',
 		name = '".$_POST["name"]."',
 		email = '".$_POST["email"]."',
 		tel = '".$_POST["tel"]."'
