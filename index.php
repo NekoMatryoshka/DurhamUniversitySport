@@ -12,14 +12,16 @@
   <title>DUS - Home</title>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
+  
   <script>
 	$(document).ready(function(){  
-
+			
 		load_data();
 		
 		function load_data(query)
@@ -35,8 +37,10 @@
 			});
 		}
 		
+		$('input.timepicker').timepicker({
+		});
+		
 		$('#sign_in').click(function(){
-			
 			
 			$('#modal_sign_in').modal('show');
 	
@@ -277,7 +281,6 @@
 
 			<h1 class="mt-4">Our Facilities</h1>
 			<br>
-				
 			<!--search bar-->
 			<div class="form-row">
     			<div class="form-group col-auto">
@@ -434,7 +437,7 @@
 					
 									<div class="form-group">
 										<label class="col-form-label">Password</label>
-										<input type="text" class="form-control" id="password_sign_in" maxlength="50" placeholder="Password"/>
+										<input type="password" class="form-control" id="password_sign_in" maxlength="50" placeholder="Password"/>
 									</div>
 						
 									<div class="modal-footer">
@@ -466,7 +469,7 @@
 					
 									<div class="form-group">
 										<label class="col-form-label">Password</label>
-										<input type="text" class="form-control" id="password_sign_up" maxlength="50" placeholder="Password"/>
+										<input type="password" class="form-control" id="password_sign_up" maxlength="50" placeholder="Password"/>
 									</div>
 									
 									<div class="form-group">
