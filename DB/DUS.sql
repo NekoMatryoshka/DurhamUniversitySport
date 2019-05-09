@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- 생성 시간: 19-05-08 15:51
+-- 생성 시간: 19-05-09 21:12
 -- 서버 버전: 10.1.38-MariaDB
 -- PHP 버전: 7.3.2
 
@@ -43,11 +43,11 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`id`, `f_id`, `f_name`, `m_id`, `m_name`, `start_time`, `end_time`) VALUES
-(87, 106, 'Tennis', 10, 'luis', '2019-05-06 10:00:00', '2019-05-06 14:00:00'),
-(88, 106, 'Tennis', 10, 'luis', '2019-05-13 11:00:00', '2019-05-13 12:00:00'),
-(89, 110, 'Foot ball ', 10, 'luis', '2019-05-21 09:00:00', '2019-05-21 16:00:00'),
-(91, 110, 'Foot ball ', 11, 'Yating', '2019-05-04 10:00:00', '2019-05-04 17:00:00'),
-(92, 110, 'Foot ball ', 11, 'Yating', '2019-05-03 11:00:00', '2019-05-03 13:00:00');
+(108, 106, 'Tennis', 22, 'luis', '2019-05-01 12:00:00', '2019-05-01 14:00:00'),
+(109, 82, 'Fancing Salle', 22, 'luis', '2019-05-21 11:00:00', '2019-05-21 15:00:00'),
+(110, 77, 'Squash Court', 22, 'luis', '2019-05-20 09:00:00', '2019-05-20 16:00:00'),
+(111, 80, 'Sports Hall', 22, 'luis', '2019-05-07 11:00:00', '2019-05-07 16:00:00'),
+(112, 106, 'Tennis', 22, 'luis', '2019-05-15 11:00:00', '2019-05-15 14:00:00');
 
 -- --------------------------------------------------------
 
@@ -87,7 +87,7 @@ INSERT INTO `facilities` (`id`, `name`, `open_time`, `close_time`, `description`
 CREATE TABLE `members` (
   `id` int(11) NOT NULL,
   `m_id` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
+  `password` varchar(200) NOT NULL,
   `name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `tel` varchar(30) NOT NULL,
@@ -99,11 +99,9 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`id`, `m_id`, `password`, `name`, `email`, `tel`, `type`) VALUES
-(6, '121212', '1212', '1231212', '1212', '12355', 'user'),
-(10, 'luis', '54321', 'WON J Y', 'kedus1234@gmail.com', '1222352342', 'admin'),
-(11, 'Yating', '0726', 'Liu Yating', '213', '312213', 'user'),
-(13, 'qwqwd', 'wqdqwd', 'qwdwq', 'qwdqwd', 'qwdqwd', 'user'),
-(14, 'mark', 'goodguy', 'rick', 'fkluis@assasin.com', 'come to my room', 'user');
+(21, 'admin', '$2y$10$lOwAh.Q9QCCTJnpe5QKNIeqrEWNkM4qrKtq4xxQIWTs7wJJmTJD9S', 'admin', 'admin', '077777777', 'user'),
+(22, 'luis', '$2y$10$FtZYOEch/kvkYDRPpfB7.uXVapGKm0eiHi13AmJJ1cO4/ebHB5FQK', 'luis', 'luis', '1111', 'user'),
+(23, 'hello', '$2y$10$I2rfdg92AZDwIysTVriKMuBPNB0jZo/dVSNIYea7T6kczKUxohH1y', 'hello', 'hello1', '2352353253', 'user');
 
 --
 -- 덤프된 테이블의 인덱스
@@ -137,19 +135,19 @@ ALTER TABLE `members`
 -- 테이블의 AUTO_INCREMENT `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- 테이블의 AUTO_INCREMENT `facilities`
 --
 ALTER TABLE `facilities`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- 테이블의 AUTO_INCREMENT `members`
 --
 ALTER TABLE `members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- 덤프된 테이블의 제약사항
