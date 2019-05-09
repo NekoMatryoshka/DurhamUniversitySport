@@ -17,22 +17,22 @@ if(!isset($_SESSION["id"]))
 		<title>DUS - Booking</title>
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js"></script>	
-
-
+		
+		<script src="../public/js/jquery.timepicker.min.js"></script>
+		<link rel="stylesheet" href="../public/css/jquery.timepicker.min.css">
+		
 		<script>
   
 		$(document).ready(function(){  	
 				
-			var cdate, f_text;
-      	
+			var cdate, open_time, close_time;
+      		
 			$('#facility').on('change',function(){
         		 var f_value = $(this).val();
        			 var f_text = $("#facility option:selected").text();
@@ -40,11 +40,37 @@ if(!isset($_SESSION["id"]))
       		  	 $('#f_id').val(f_value);
       		     $('#f_name').val(f_text);
       		     $('#f_dname').val(f_text);
-      		     $('#calendar').fullCalendar('rerenderEvents');		     
+      		     $('#calendar').fullCalendar('rerenderEvents');		
+      		          
+      		     $.ajax({
+					url:"time.php",
+					method:"POST",
+					data:{f_id:f_value},
+					dataType:"json",
+					success:function(data)
+					{		
+						$('#start_time').timepicker({
+							'timeFormat': 'H:i',
+							'minTime': data.open_time,
+							'maxTime': data.close_time,
+							'useSelect': true,
+							'step' : '60'
+						});
+						
+						$('#end_time').timepicker({
+							'timeFormat': 'H:i',
+							'minTime': data.open_time,
+							'maxTime': data.close_time,
+							'useSelect': true,
+							'step' : '60'
+						});
+					}	
+				});
+      		          
   			 });
-				
+	
+	
 			// calendar
-			
 			var calendar = $('#calendar').fullCalendar({
 				
 				header: {
@@ -76,7 +102,8 @@ if(!isset($_SESSION["id"]))
 						$('#m_id').val(m_id);
 						$('#m_dname').val(m_name);
 						$('#m_name').val(m_name);
-						cdate = date.format();			 
+						cdate = date.format();			
+					
 					}
 				},
 				
@@ -84,11 +111,11 @@ if(!isset($_SESSION["id"]))
 				{
 					if(confirm("Are you sure you want to remove it?"))
 					{
-						var id = event.id;
+						var e_id = event.id;
 						$.ajax({
 							url:"delete.php",
 							type:"POST",
-							data:{id:id},
+							data:{id:e_id},
 							success:function()
 							{
 								calendar.fullCalendar('refetchEvents');
@@ -100,6 +127,8 @@ if(!isset($_SESSION["id"]))
 				
 			});			
 			//end calendar
+			
+			
 			
 			//modal
 			$('#bookButton').click(function(e){
@@ -207,7 +236,7 @@ if(!isset($_SESSION["id"]))
 
 			<h1 class="mt-4">Bookings</h1>
 			<br>
-				
+			
 			<!--search bar-->
 			<div class="form-row">
     			<div class="form-group col-auto">
@@ -228,13 +257,13 @@ if(!isset($_SESSION["id"]))
 			  <div class="modal-dialog" role="document">
 				<div class="modal-content">
 				  <div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">New message</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Booking</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					  <span aria-hidden="true">&times;</span>
 					</button>
 				  </div>
 				  <div class="modal-body">
-					<form>
+				
 					  <div class="form-group">
 						<label class="col-form-label">Date</label>
 						<input type="text" class="form-control" id="date" disabled>
@@ -251,39 +280,16 @@ if(!isset($_SESSION["id"]))
 						<input type="hidden" class="form-control" id="f_name" name="f_name">
 						<input type="text" class="form-control" id="f_dname" name="f_dname" disabled>
 					  </div>
-					  <div class="form-group">
-						<label class="col-form-label">Start Time</label>
-							<select class="browser-default custom-select" id="start_time" name="start_time">
-							<option selected>Start Time</option>
-							<option value="09:00:00">9:00AM</option>
-							<option value="10:00:00">10:00AM</option>
-							<option value="11:00:00">11:00AM</option>
-							<option value="12:00:00">12:00PM</option>
-							<option value="13:00:00">1:00PM</option>
-							<option value="14:00:00">2:00PM</option>
-							<option value="15:00:00">3:00PM</option>
-							<option value="16:00:00">4:00PM</option>
-							<option value="17:00:00">5:00PM</option>
-							<option value="18:00:00">6:00PM</option>
-						</select>
+					  <div class="form-row">
+						<div class="col">
+							<label class="col-form-label">Start Time</label>
+							<input id="start_time" type="text" class="form-control">
+						</div>
+						<div class="col">
+							<label class="col-form-label">End Time</label>
+							<input id="end_time" type="text" class="form-control">
+						</div>
 					  </div>
-					  <div class="form-group">
-						<label class="col-form-label">End Time</label>
-							<select class="browser-default custom-select" id="end_time" name="end_time">
-							<option selected>End Time</option>
-							<option value="09:00:00">9:00AM</option>
-							<option value="10:00:00">10:00AM</option>
-							<option value="11:00:00">11:00AM</option>
-							<option value="12:00:00">12:00PM</option>
-							<option value="13:00:00">1:00PM</option>
-							<option value="14:00:00">2:00PM</option>
-							<option value="15:00:00">3:00PM</option>
-							<option value="16:00:00">4:00PM</option>
-							<option value="17:00:00">5:00PM</option>
-							<option value="18:00:00">6:00PM</option>
-						</select>
-					  </div>				  
-					</form>
 				  </div>
 				  <div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -293,14 +299,10 @@ if(!isset($_SESSION["id"]))
 			  </div>
 			</div>
 			<!-- modal end-->
-			
-			
-			
+				
 		</div>
 		<!-- contents end -->
 		
-		
-
 		<!-- footer -->
 		<nav class="navbar navbar-dark text-right" style="background-color:#742F68;">
 			<div class="col-12">
