@@ -39,11 +39,11 @@ if($total_row > 0)
 	{
 		$output .= '
 		<tr>
-			<td width="10%">'.$row["m_id"].'</td>
+			<td width="15%">'.$row["m_id"].'</td>
 			<td width="20%">'.$row["name"].'</td>
-			<td width="20%">'.$row["password"].'</td>
+			<td width="10%"> *Secret Info* </td>
 			<td width="20%">'.$row["email"].'</td>
-			<td width="10%">'.$row["tel"].'</td>
+			<td width="15%">'.$row["tel"].'</td>
 			<td width="20%">
 				<button type="button" name="edit" class="btn btn-outline-primary edit" id="'.$row["id"].'">Edit</button>
 				<button type="button" name="delete" class="btn btn-outline-danger delete" id="'.$row["id"].'">Del</button>
