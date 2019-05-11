@@ -16,32 +16,9 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
-
+    <script src="public/js/validation.js"></script>
 
     <script>
-    function isEmail(email) {
-        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        return regex.test(email);
-    }
-
-    function validationMessage(id, message) {
-        $(id).css({
-            "border": '#FF0000 1px solid'
-        });
-        $(id).attr("placeholder", message);
-        return;
-    }
-
-
-    function validationPass(ids) {
-        for (i = 0; i < ids.length; i++) {
-            $(ids[i]).css({
-                "border": '#ced4da 1px solid'
-            });
-        }
-
-    }
-
     $(document).ready(function() {
 
         load_data();
@@ -75,14 +52,14 @@
             var password = $('#password_sign_in').val();
 
             /**validation Begins */
-            validationPass(["#id_sign_up", "#password_sign_up"]);
+            validationPass(["#id_sign_in", "#password_sign_in"]);
 
             if (id.length <= 0) {
-                validationMessage('#id_sign_up', "Please enter a valid id.")
+                validationMessage('#id_sign_in', "Please enter a valid id.")
                 return;
 
             } else if (password.length <= 0) {
-                validationMessage('#password_sign_up', "Please enter a valid password.")
+                validationMessage('#password_sign_in', "Please enter a valid password.")
                 return;
             }
             /**validation ENDs */
@@ -123,9 +100,9 @@
             var email = $('#email_sign_up').val();
             var tel = $('#tel_sign_up').val();
 
-            validationPass(["#id_sign_up", "#password_sign_up", "#ame_sign_up", "#email_sign_up",
+            validationPass(["#id_sign_up", "#password_sign_up", "#name_sign_up", "#email_sign_up",
                 "#tel_sign_up"
-            ]);
+            ]); // Clear validation
 
             if (id.length <= 0) {
                 validationMessage('#id_sign_up', "Please enter a valid id.")
@@ -147,13 +124,6 @@
                 validationMessage('#tel_sign_up', "Please enter a valid tel number.")
                 return;
             }
-
-            $('#directLink').css({
-                'backgroundColor': 'red'
-            });
-
-
-
 
             $.ajax({
                 url: "./login/signup_check.php",
@@ -257,25 +227,32 @@
         });
         /**add new facility */
 
-
+        /** Delete facility*/
         $(document).on('click', '.delete', function() {
             var id = $(this).attr('id');
             var action = 'delete';
-            $.ajax({
-                url: "./home/action.php",
-                method: "POST",
-                data: {
-                    id: id,
-                    action: action
-                },
-                success: function(data) {
-                    $('#message').html(data);
-                    $('#confirmation').modal('show');
-                    load_data();
-                }
-            });
 
+            var retVal = confirm("Are you sure you want to delete?");
+            if (retVal == true) {
+                $.ajax({
+                    url: "./home/action.php",
+                    method: "POST",
+                    data: {
+                        id: id,
+                        action: action
+                    },
+                    success: function(data) {
+                        $('#message').html(data);
+                        $('#confirmation').modal('show');
+                        load_data();
+                    }
+                });
+                return true;
+            } else {
+                return false;
+            }
         });
+        /** Delete facility*/
 
         $(document).on('click', '.edit', function() {
             var id = $(this).attr('id');
