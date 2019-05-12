@@ -1,10 +1,11 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer; 
 use PHPMailer\PHPMailer\Exception; 
 
-require './PHPMailer/src/Exception.php'; 
-require './PHPMailer/src/PHPMailer.php'; 
-require './PHPMailer/src/SMTP.php';
+require_once(__DIR__ . './PHPMailer/src/Exception.php');
+require_once(__DIR__ . './PHPMailer/src/PHPMailer.php');
+require_once(__DIR__ . './PHPMailer/src/SMTP.php');
 
 function sendSecureEmail($to, $username, $subject, $message) {
     //security filter on receiver address
@@ -53,27 +54,36 @@ function sendSecureEmail($to, $username, $subject, $message) {
 function sendSecurityConfirmationEmail($to, $username) {
     $randomConfirmationCode = strtoupper(substr(md5(uniqid(rand(), true)), 5, 5));
     $subject = "DSU: Please verify your email address";
-    $message = "Hello $username,<br/>&nbsp&nbsp&nbsp&nbspPlease verify your email address. Your Confirmation code from DUS is <b>$randomConfirmationCode</b>.";
+    $message = "Hello $username,<br/>Please verify your email address. Your Confirmation code from DUS is <b>$randomConfirmationCode</b>.";
     $isSent = sendSecureEmail($to, $username, $subject, $message);
-    if($isSent){
+    if($isSent)
         return $randomConfirmationCode;
-    } else{
+    else
         return false;
-    }
 }
 
-function sendBookingConfirmationEmail($to, $username, $booking){
-    $subject = "DSU: Block";
-    $greetings = "Hello $username,<br/>&nbsp&nbsp&nbsp&nbspThank you for your booking. Here is your booking details";
-    //TODO: Add booking detail as well as the payment number here, dont forget the discount for members.
-    $bookingDetails = "<table></table>"
-    $message = 
-    $isSent = sendSecureEmail($to, $username, $subject, $message);
-    if($isSent){
-        return $randomConfirmationCode;
-    } else{
-        return false;
+function sendBookingConfirmationEmail($to, $username, $bookingDetail){
+    $bookingId = $bookingDetail['bookingId'];
+    $facilityNames = $bookingDetail['facilityNames'];
+    $facilityNameList = "";
+    foreach ($facilityNames as $name) {
+        $facilityNameList.=$name.", ";
     }
+    $facilityNameList= substr($facilityNameList,0,strlen($facilityNameList)-2).".";
+    $startTime = $bookingDetail['startTime'];
+    $endTime = $bookingDetail['endTime'];
+    $pay = $bookingDetail['pay'];
+
+    $subject = "DSU: Booking Confirmation";
+    $greetings = "Hello $username,<br/>Thank you for your booking. Here is your booking details<br/>";
+    //TODO: Add booking detail as well as the payment number here, dont forget the discount for members.
+    $bookingMessage = "<table border=1>"
+                    ."<tr><th>Booking Number</th><th>Facilities</th><th>Start Time</th><th>End Time</th></tr>"
+                    ."<tr><td>$bookingId</td><td>$facilityNameList</td><td>$startTime</td><td>$endTime</td></tr>"
+                    ."</table><br/>";
+    $paymentMessage = "Your total payment for this booking is $pay.";            
+    $message = $greetings.$bookingMessage.$paymentMessage;
+    return sendSecureEmail($to, $username, $subject, $message);
 }
 
 ?>

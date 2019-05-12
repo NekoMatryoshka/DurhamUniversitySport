@@ -1,6 +1,14 @@
 <?php
 	
 	require '../DB/DB_Connection.php';
+
+	session_start();
+	$sentConfirmationCode = $_SESSION['confirmation_code'];
+	$confirmationCode = $_POST['confirmation_code'];
+	if($confirmationCode != $sentConfirmationCode){
+		echo "email fail";
+		die();
+	}
 	
 	if(isset($_POST["id"])) {
 	
