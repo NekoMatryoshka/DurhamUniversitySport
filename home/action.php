@@ -14,8 +14,8 @@ if(isset($_POST["action"]))
         move_uploaded_file($_FILES['file']['tmp_name'],$folder_path);
             
 		$query = "
-		INSERT INTO facilities (name, open_time, close_time, description, contact, tel, price, image) 
-		VALUES ('".$_POST["name"]."','".$_POST["open_time"]."','".$_POST["close_time"]."','".$_POST["description"]."'
+		INSERT INTO facilities (name, open_time, close_time, description, capacity, duration, contact, tel, price, image) 
+		VALUES ('".$_POST["name"]."','".$_POST["open_time"]."','".$_POST["close_time"]."','".$_POST["description"]."','".$_POST["capacity"]."','".$_POST["duration"]."'
 		,'".$_POST["contact"]."','".$_POST["tel"]."','".$_POST["price"]."','".$img_path."')
 		";
 		$statement = $connect->prepare($query);
@@ -29,8 +29,8 @@ if(isset($_POST["action"]))
 		
 	
 		$query = "
-			SELECT id, name, TIME_FORMAT(open_time, '%H:%i') as open_time, TIME_FORMAT(close_time, '%H:%i') as close_time, contact, price, description, tel
-	 		FROM facilities WHERE id = '".$_POST["id"]."'
+			SELECT id, name, TIME_FORMAT(open_time, '%H:%i') as open_time, TIME_FORMAT(close_time, '%H:%i') as close_time, contact, price, description, capacity, duration, 
+			tel FROM facilities WHERE id = '".$_POST["id"]."'
 		";
 		
 	
@@ -43,6 +43,9 @@ if(isset($_POST["action"]))
 			$output['name'] = $row['name'];
 			$output['open_time'] = $row['open_time'];
 			$output['close_time'] = $row['close_time'];
+			$output['description'] = $row['description'];
+			$output['capacity'] = $row['capacity'];
+			$output['duration'] = $row['duration'];
 			$output['description'] = $row['description'];
 			$output['contact'] = $row['contact'];
 			$output['tel'] = $row['tel'];
@@ -67,7 +70,9 @@ if(isset($_POST["action"]))
 		price = '".$_POST["price"]."',
 		tel = '".$_POST["tel"]."',
 		image = '".$img_path."',
-		description = '".$_POST["description"]."'  
+		description = '".$_POST["description"]."', 
+		capacity = '".$_POST["capacity"]."', 
+		duration = '".$_POST["duration"]."'  
 		WHERE id = '".$_POST["id"]."'
 		";
 		$statement = $connect->prepare($query);
