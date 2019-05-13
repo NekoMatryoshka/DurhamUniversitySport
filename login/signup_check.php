@@ -5,7 +5,8 @@
 	session_start();
 	$sentConfirmationCode = $_SESSION['confirmation_code'];
 	$confirmationCode = $_POST['confirmation_code'];
-	if($confirmationCode != $sentConfirmationCode){
+
+	if(isset($confirmationCode) || $confirmationCode != $sentConfirmationCode){
 		echo "email fail";
 		die();
 	}
