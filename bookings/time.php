@@ -11,6 +11,8 @@
 		{	
 			$output['open_time'] = $row['open_time'];
 			$output['close_time'] = $row['close_time'];
+			$output['capacity'] = $row['capacity'];
+			$output['duration'] = $row['duration'];
 		}
 		echo json_encode($output);
 ?>

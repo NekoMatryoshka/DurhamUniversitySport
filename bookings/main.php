@@ -27,6 +27,8 @@ if(!isset($_SESSION["id"]))
 		<script src="../public/js/jquery.timepicker.min.js"></script>
 		<link rel="stylesheet" href="../public/css/jquery.timepicker.min.css">
 		
+	
+	
 		<script>
   
 		$(document).ready(function(){  	
@@ -34,6 +36,8 @@ if(!isset($_SESSION["id"]))
 			var cdate, open_time, close_time;
       		
 			$('#facility').on('change',function(){
+			
+				
         		 var f_value = $(this).val();
        			 var f_text = $("#facility option:selected").text();
       		    
@@ -42,69 +46,115 @@ if(!isset($_SESSION["id"]))
       		     $('#f_dname').val(f_text);
       		     $('#calendar').fullCalendar('rerenderEvents');		
       		          
+      		              
       		     $.ajax({
 					url:"time.php",
 					method:"POST",
 					data:{f_id:f_value},
 					dataType:"json",
 					success:function(data)
-					{		
-						$('#start_time').timepicker({
-							'timeFormat': 'H:i',
-							'minTime': data.open_time,
-							'maxTime': data.close_time,
-							'useSelect': true,
-							'step' : '60'
-						});
-						
-						$('#end_time').timepicker({
-							'timeFormat': 'H:i',
-							'minTime': data.open_time,
-							'maxTime': data.close_time,
-							'useSelect': true,
-							'step' : '60'
-						});
+					{				
+						$('#calendar').fullCalendar('option', 'minTime', data.open_time);
+						$('#calendar').fullCalendar('option', 'maxTime', data.close_time);
+						$('#capacity').val(data.capacity);
+						$('#duration').val(data.duration);
+						$('#calendar').fullCalendar('option','slotDuration',data.duration);
+						calendar.fullCalendar('refetchEvents');
 					}	
 				});
       		          
   			 });
+  			 
+  			 $('#start_time').on('selectTime', function(){
+  			 	start_time = $('#start_time').val();
+  			 });
+  			 
+  			 $('#end_time').on('selectTime', function(){
+        		var end_time = $('#end_time').val(); 
+        		
+        		if (end_time <= start_time){
+        			alert("The End Time is must be later than The Start Time");
+        			$('#end_time').val(""); 
+        		}
+    		 });
+  			 
 	
-	
-			// calendar
 			var calendar = $('#calendar').fullCalendar({
-				
+		
 				header: {
 				left: 'prev,next today',
 				center: 'title',
 				right: 'month,agendaWeek,agendaDay,listWeek'
 				},
 				
-				navLinks: true,
+				selectable:true,
 				eventLimit: true,
-				events: 'load.php',
+				slotDuration : '00:30:00',
+				events : 'load.php',
+				eventStartEditable : true,
+				slotEventOverlap : false,
+				scrollTime: '09:00:00',
+				
 				
 				eventRender: function eventRender( event, element, view ) {
         			return ['all', event.f_id].indexOf($('#facility').val()) >= 0;
+        			
     			},
+    			
+				selectAllow: function(selectInfo) { 
+					var hour = $('#duration').val();
+					var decimal_hour = moment.duration(hour).asHours();
+					var duration = moment.duration(selectInfo.end.diff(selectInfo.start));			
+					return duration.asHours() <= decimal_hour;
+				},
 				
-				dayClick: function(date, jsEvent, view)
+				select: function(start, end, allDay)
 				{
-				
+					
 					if($('#facility').val() == "all"){
 						alert("Please select the facility");
 					} 
 					else
 					{
-						$('#modal').modal('show');
-						$('#date').val(date.format());
+					
 						var m_id = '<?php echo $_SESSION['id']?>';
 						var m_name = '<?php echo $_SESSION['m_id']?>';
-						$('#m_id').val(m_id);
-						$('#m_dname').val(m_name);
-						$('#m_name').val(m_name);
-						cdate = date.format();			
+						var f_id = $("#facility").val();
+						var f_name = $("#facility option:selected").text();
+						var start_time = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
+						var end_time = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
+						var capacity = $('#capacity').val();
+						
+						$.ajax({  
+							url:"insert.php",  
+							method:"POST",  
+							data:{
+								m_id:m_id,
+								m_name:m_name,
+								f_id:f_id,
+								f_name:f_name,
+								capacity:capacity,
+								date:cdate,
+								start_time:start_time,
+								end_time:end_time
+							},  
+							success:function(data)  
+							{  
+								alert(data);
+								calendar.fullCalendar('refetchEvents');
+							}    	
+						}); 		
+					}	
+				},
+				
+				dayClick: function(date, jsEvent, view)
+				{
+			
+					cdate = date.format();
+					$('#calendar').fullCalendar('changeView', 'agendaDay');
+					$('#calendar').fullCalendar('gotoDate',cdate);
 					
-					}
+			
 				},
 				
 				eventClick:function(event)
@@ -125,42 +175,10 @@ if(!isset($_SESSION["id"]))
 				},
 				
 				
+				
 			});			
-			//end calendar
 			
-			
-			
-			//modal
-			$('#bookButton').click(function(e){
-			    e.preventDefault();
-			    
-			    var m_id = $('#m_id').val(); 
-				var m_name = $('#m_name').val(); 
-				var f_id = $('#f_id').val();
-				var f_name = $('#f_name').val();
-				var start_time = cdate +" "+$('#start_time').val();
-				var end_time = cdate +" "+ $('#end_time').val();
-			
-				$.ajax({  
-            		url:"insert.php",  
-    	   	   	 	method:"POST",  
-                	data:{
-                		m_id:m_id,
-                		m_name:m_name,
-                		f_id:f_id,
-                		f_name:f_name,
-               		 	start_time:start_time,
-                		end_time:end_time
-                	},  
-                	success:function(data)  
-                	{  
-                		$('#modal').modal('hide');
-                		calendar.fullCalendar('refetchEvents');
-                	}    	
-            	}); 			
-			
-			
-			});
+	
 		
 		});
 		</script>
@@ -250,63 +268,26 @@ if(!isset($_SESSION["id"]))
   			</div>
 
 			<!-- calendar -->
+			
+			<input type="hidden" id="capacity">
+			<input type="hidden" id="duration">
 			<div id="calendar"></div><br>
 			
 			<!-- modal -->
-			<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-				<div class="modal-content">
-				  <div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Booking</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					  <span aria-hidden="true">&times;</span>
-					</button>
-				  </div>
-				  <div class="modal-body">
-				
-					  <div class="form-group">
-						<label class="col-form-label">Date</label>
-						<input type="text" class="form-control" id="date" disabled>
-					  </div>
-					  <div class="form-group">
-						<label class="col-form-label">ID</label>
-						<input type="hidden" class="form-control" id="m_id" name="m_id">
-						<input type="hidden" class="form-control" id="m_name" name="m_name">
-						<input type="text" class="form-control" id="m_dname" name="m_dname" disabled>   
-					  </div>
-					  <div class="form-group">
-						<label class="col-form-label">Facility</label>
-						<input type="hidden" class="form-control" id="f_id" name="f_id">
-						<input type="hidden" class="form-control" id="f_name" name="f_name">
-						<input type="text" class="form-control" id="f_dname" name="f_dname" disabled>
-					  </div>
-					  <div class="form-row">
-						<div class="col">
-							<label class="col-form-label">Start Time</label>
-							<input id="start_time" type="text" class="form-control">
-						</div>
-						<div class="col">
-							<label class="col-form-label">End Time</label>
-							<input id="end_time" type="text" class="form-control">
-						</div>
-					  </div>
-				  </div>
-				  <div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="bookButton" name="bookButton">Book</button>
-				  </div>
-				</div>
-			  </div>
-			</div>
+
 			<!-- modal end-->
-				
+			
+			
+			
 		</div>
 		<!-- contents end -->
 		
+		
+
 		<!-- footer -->
 		<nav class="navbar navbar-dark text-right" style="background-color:#742F68;">
 			<div class="col-12">
-				<span class="navbar-text text-white">© 2019 DUS - Group9</span>
+				<span class="navbar-text text-white">Â© 2019 DUS - Group9</span>
 			</div>
 		</nav>
 		

@@ -17,6 +17,7 @@ foreach($result as $row)
 	'start' => $row["start_time"],
 	'end' => $row["end_time"]
 	);
+	
 }
 
 echo json_encode($data);
