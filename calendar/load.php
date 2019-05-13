@@ -2,7 +2,7 @@
 
 //load.php
 
-$connect = new PDO('mysql:host=localhost;dbname=testing', 'root', '');
+$connect = new PDO('mysql:host=localhost:80;dbname=testing', 'root', 'root');
 
 $data = array();
 
