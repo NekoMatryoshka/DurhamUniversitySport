@@ -19,31 +19,19 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
   
-  <script><?php
-
-//delete.php
-
-require '../DB/DB_Connection.php';
-
-if(isset($_POST["id"]))
-{
-	$query = "
-	DELETE from bookings WHERE id='".$_POST["id"]."'";
-	$statement = $connect->prepare($query);
-	$statement->execute();
-}
-
-?>
+  <script>
 	$(document).ready(function(){  
 			
 		load_data();
 		
 		function load_data(query)
 		{
+			var session = $("#session").val();
+			
 			$.ajax({
 				url:"./home/load.php",
 				method:"POST",
-				data:{query:query},
+				data:{query:query,session:session},
 				success:function(data)
 				{
 					$('#card').html(data);
@@ -230,6 +218,7 @@ if(isset($_POST["id"]))
 
   <body>
    	    <!-- nav1 -->	
+   	    <?php if(isset($_SESSION["type"])) echo "<input type='hidden' name ='session' id='session' value='".$_SESSION["type"]."'/>"; ?>
 		<nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#742F68;">
 			<div class="container-fluid">
 
