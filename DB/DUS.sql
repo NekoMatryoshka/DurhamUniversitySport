@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- 생성 시간: 19-05-09 21:12
+-- 생성 시간: 19-05-13 23:16
 -- 서버 버전: 10.1.38-MariaDB
 -- PHP 버전: 7.3.2
 
@@ -34,20 +34,10 @@ CREATE TABLE `bookings` (
   `f_name` varchar(30) NOT NULL,
   `m_id` int(30) NOT NULL,
   `m_name` varchar(50) NOT NULL,
+  `date` date NOT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- 테이블의 덤프 데이터 `bookings`
---
-
-INSERT INTO `bookings` (`id`, `f_id`, `f_name`, `m_id`, `m_name`, `start_time`, `end_time`) VALUES
-(108, 106, 'Tennis', 22, 'luis', '2019-05-01 12:00:00', '2019-05-01 14:00:00'),
-(109, 82, 'Fancing Salle', 22, 'luis', '2019-05-21 11:00:00', '2019-05-21 15:00:00'),
-(110, 77, 'Squash Court', 22, 'luis', '2019-05-20 09:00:00', '2019-05-20 16:00:00'),
-(111, 80, 'Sports Hall', 22, 'luis', '2019-05-07 11:00:00', '2019-05-07 16:00:00'),
-(112, 106, 'Tennis', 22, 'luis', '2019-05-15 11:00:00', '2019-05-15 14:00:00');
 
 -- --------------------------------------------------------
 
@@ -61,6 +51,8 @@ CREATE TABLE `facilities` (
   `open_time` time NOT NULL,
   `close_time` time NOT NULL,
   `description` varchar(300) NOT NULL,
+  `capacity` int(10) NOT NULL,
+  `duration` time NOT NULL,
   `contact` varchar(50) NOT NULL,
   `tel` varchar(20) NOT NULL,
   `price` int(10) NOT NULL,
@@ -71,12 +63,13 @@ CREATE TABLE `facilities` (
 -- 테이블의 덤프 데이터 `facilities`
 --
 
-INSERT INTO `facilities` (`id`, `name`, `open_time`, `close_time`, `description`, `contact`, `tel`, `price`, `image`) VALUES
-(77, 'Squash Court', '09:00:00', '18:00:00', 'This is a Squash Court.', 'squash@dur.ac.kr', '072970123233', 15, './public/img/Squash-Courts.jpg'),
-(80, 'Sports Hall', '11:00:00', '17:00:00', 'This is a Sports Hall', 'hall@dur.ac.kr', '07239482332', 12, './public/img/Sports-Hall.jpg'),
-(82, 'Fancing Salle', '11:00:00', '16:00:00', 'This is a Fencing Salle\r\nhi', 'fencing@dur.ac.kr', '071248123', 20, './public/img/teamdurham.png'),
-(106, 'Tennis', '11:00:00', '14:00:00', 'asdasd', 'asd', '1212', 12, './public/img/teamdurham.png'),
-(110, 'Foot ball ', '10:00:00', '14:00:00', 'sdsdfdsf', '23424', '23524', 20, './public/img/New.png');
+INSERT INTO `facilities` (`id`, `name`, `open_time`, `close_time`, `description`, `capacity`, `duration`, `contact`, `tel`, `price`, `image`) VALUES
+(77, 'Squash Court', '09:00:00', '18:00:00', 'This is a Squash Court.', 5, '01:00:00', 'squash@dur.ac.kr', '072970123233', 15, './public/img/Squash-Courts.jpg'),
+(80, 'Sports Hall', '11:00:00', '17:00:00', 'This is a Sports Hall', 4, '02:00:00', 'hall@dur.ac.kr', '07239482332', 12, './public/img/Squash-Courts.jpg'),
+(82, 'Fancing Salle', '11:00:00', '16:00:00', 'This is a Fencing Salle\r\nhi', 3, '00:30:00', 'fencing@dur.ac.kr', '071248123', 20, './public/img/Squash-Courts.jpg'),
+(106, 'Tennis', '06:00:00', '24:00:00', 'asdasd', 1, '03:00:00', 'asd', '1212', 12, './public/img/'),
+(110, 'Foot ball ', '10:00:00', '14:00:00', 'sdsdfdsf', 2, '01:30:00', '23424', '23524', 20, './public/img/Squash-Courts.jpg'),
+(115, 'library', '06:00:00', '20:00:00', 'zadadada', 2, '01:30:00', 'sadasd', 'asdasd', 123, './public/img/Sports-Hall.jpg');
 
 -- --------------------------------------------------------
 
@@ -99,9 +92,11 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`id`, `m_id`, `password`, `name`, `email`, `tel`, `type`) VALUES
-(21, 'admin', '$2y$10$lOwAh.Q9QCCTJnpe5QKNIeqrEWNkM4qrKtq4xxQIWTs7wJJmTJD9S', 'admin', 'admin', '077777777', 'user'),
+(21, 'admin', '$2y$10$lOwAh.Q9QCCTJnpe5QKNIeqrEWNkM4qrKtq4xxQIWTs7wJJmTJD9S', 'admin', 'admin', '077777777', 'admin'),
 (22, 'luis', '$2y$10$FtZYOEch/kvkYDRPpfB7.uXVapGKm0eiHi13AmJJ1cO4/ebHB5FQK', 'luis', 'luis', '1111', 'user'),
-(23, 'hello', '$2y$10$I2rfdg92AZDwIysTVriKMuBPNB0jZo/dVSNIYea7T6kczKUxohH1y', 'hello', 'hello1', '2352353253', 'user');
+(23, 'hello', '$2y$10$I2rfdg92AZDwIysTVriKMuBPNB0jZo/dVSNIYea7T6kczKUxohH1y', 'hello', 'hello1', '2352353253', 'user'),
+(24, 'qwe', '$2y$10$uo1LQYfQYe4C9YNauQmAPOENaXjQYK5DlYD17clz88ZHa4G/FnL0G', '4444', '5555', '5555', 'user'),
+(25, '', '$2y$10$syQ9jhdG/45rdFvPTqd76uYlhzK7PNQQT1/RSspp2JP13fotQBwJ2', '', '', '', 'user');
 
 --
 -- 덤프된 테이블의 인덱스
@@ -135,19 +130,19 @@ ALTER TABLE `members`
 -- 테이블의 AUTO_INCREMENT `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=378;
 
 --
 -- 테이블의 AUTO_INCREMENT `facilities`
 --
 ALTER TABLE `facilities`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
 --
 -- 테이블의 AUTO_INCREMENT `members`
 --
 ALTER TABLE `members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- 덤프된 테이블의 제약사항
