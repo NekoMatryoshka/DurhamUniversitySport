@@ -1,7 +1,6 @@
 
 <?php
 
-
 include("../DB/DB_Connection.php");
 
 if(isset($_POST["query"]))
@@ -49,14 +48,26 @@ if($total_row > 0)
 					<li class="list-group-item"><b>Contact: </b>'.$row["contact"].'</li>
 					<li class="list-group-item"><b>Tel: </b>'.$row["tel"].'</li>
 					<li class="list-group-item"><b>Price: </b>£'.$row["price"].' per hour</li>
-				</ul>
+				</ul>';
 			
+		if (isset($_POST["session"]) && $_POST["session"] == "admin"){
+			$output .= '
 				<div class="card-footer">
 					<button type="button" name="edit" class="btn btn-outline-primary edit" id="'.$row["id"].'">Edit</button>
 					<button type="button" name="delete" class="btn btn-outline-danger delete" id="'.$row["id"].'">Del</button>
 				</div>
-			</div>
-		';
+			</div>';
+		}
+		else
+		{
+			$output .= '
+				<div class="card-footer">
+					<a href="./bookings/main.php" type="button" class="btn btn-xs">Booking</a>
+				</div>
+			</div>';
+		}
+		
+		
 	}
 }
 else
