@@ -62,7 +62,7 @@
                 success: function(data) {
                     if (data == "success") {
                         alert("Login Successed");
-                        window.location.href = "/DUS/index.php"
+                        location.reload(true);
                     } else {
                         alert("Invalid ID or Password");
                     }
@@ -83,7 +83,6 @@
 
         $('#submit_sign_up').click(function() {
 
-            var id = $('#id_sign_up').val();
             var password = $('#password_sign_up').val();
             var name = $('#name_sign_up').val();
             var email = $('#email_sign_up').val();
@@ -93,7 +92,6 @@
                 url: "./login/signup_check.php",
                 method: "POST",
                 data: {
-                    id: id,
                     password: password,
                     name: name,
                     email: email,
@@ -102,10 +100,9 @@
                 success: function(data) {
                     if (data == "success") {
                         alert("Your account is successfully created");
-                        window.location.href = "/DUS/index.php";
+                        location.reload(true);
                     } else {
-                        alert("Your ID alreay exists");
-                        $('#id_sign_up').val("");
+                        alert("Your email already exists. Please try another email.");
                     }
                 }
             });
@@ -535,28 +532,23 @@
                         </button>
                     </div>
                     <div class="modal-body">
-
-                        <div class="form-group">
-                            <label class="col-form-label">ID</label>
-                            <input type="text" class="form-control" id="id_sign_up" maxlength="50" placeholder="ID" />
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-form-label">Password</label>
-                            <input type="password" class="form-control" id="password_sign_up" maxlength="50"
-                                placeholder="Password" />
-                        </div>
-
                         <div class="form-group">
                             <label class="col-form-label">Name</label>
                             <input type="text" class="form-control" id="name_sign_up" maxlength="50"
                                 placeholder="Name" />
                         </div>
 
+
                         <div class="form-group">
                             <label class="col-form-label">Email</label>
                             <input type="text" class="form-control" id="email_sign_up" maxlength="50"
                                 placeholder="Email" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label">Password</label>
+                            <input type="password" class="form-control" id="password_sign_up" maxlength="50"
+                                placeholder="Password" />
                         </div>
 
                         <div class="form-group">

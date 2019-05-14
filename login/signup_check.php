@@ -11,10 +11,11 @@
 		die();
 	}
 	
-	if(isset($_POST["id"])) {
+	
+	if(isset($_POST["email"])) {
 	
 		$query="
-		SELECT * FROM members WHERE m_id = '".$_POST['id']."'
+		SELECT * FROM members WHERE email = '".$_POST['email']."'
 		";
 	
 		$statement = $connect->prepare($query);
@@ -32,8 +33,7 @@
 			
 			$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 			
-			$query ="
-			INSERT INTO members (m_id, password, name, email, tel)
+			$query ="INSERT INTO members (m_id, password, name, email, tel)
 			VALUES ('".$_POST['id']."','".$password."','".$_POST['name']."','".$_POST['email']."','".$_POST['tel']."')
 			";
 	
@@ -44,6 +44,9 @@
 	
 		}
 		
+	}
+	else{
+		echo "fail";
 	}
 	
 ?>
