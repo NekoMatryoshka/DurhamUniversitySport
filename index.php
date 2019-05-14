@@ -321,10 +321,10 @@
                 </li>
 
 
-                <li class="nav-item">
+                <li class="nav-item" style="<?php if(!isset($_SESSION["type"])){echo "display:none";}?>">
                     <a class="nav-link" href="./bookings/main.php">Bookings</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" style="<?php if(!isset($_SESSION["type"])){echo "display:none";}?>">
                     <a class="nav-link" href="./members/main.php">Members</a>
                 </li>
 
