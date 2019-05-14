@@ -6,9 +6,7 @@
 	$id = $_POST['id'];
 	$password = $_POST['password'];
 		
-	$query="
-			SELECT * FROM members WHERE m_id= '".$id."'
-			";
+	$query="SELECT * FROM members WHERE m_id= '".$id."' OR  email= '".$id."'";
 	
 	$statement = $connect->prepare($query);
 	$statement->execute();
