@@ -17,7 +17,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
-
+    <script src="./public/js/validation.js"></script>
     <script>
     $(document).ready(function() {
 
@@ -51,6 +51,20 @@
 
             var id = $('#id_sign_in').val();
             var password = $('#password_sign_in').val();
+
+            /**validation Begins */
+            validationPass(["#id_sign_in", "#password_sign_in"]);
+
+            if (id.length <= 0) {
+                validationMessage('#id_sign_in', "Please enter a valid email.")
+                return;
+
+            } else if (password.length <= 0) {
+                validationMessage('#password_sign_in', "Please enter a valid password.")
+                return;
+            }
+            /**validation ENDs */
+
 
             $.ajax({
                 url: "./login/login_check.php",
@@ -86,6 +100,34 @@
             var name = $('#name_sign_up').val();
             var email = $('#email_sign_up').val();
             var tel = $('#tel_sign_up').val();
+
+            var password = $('#password_sign_up').val();
+            var name = $('#name_sign_up').val();
+            var email = $('#email_sign_up').val();
+            var confirmation_code = $('#confirmation_code_sign_up').val();
+            var tel = $('#tel_sign_up').val();
+
+            validationPass(["#id_sign_up", "#password_sign_up", "#name_sign_up", "#email_sign_up",
+                "#tel_sign_up"
+            ]); // Clear validation
+
+
+            if (name.length <= 0) {
+                validationMessage('#name_sign_up', "Please enter a valid name.")
+                return;
+
+            } else if (email.length <= 0 || !isEmail(email)) {
+                validationMessage('#email_sign_up', "Please enter a valid email email.")
+                return;
+            } else if (password.length <= 0) {
+                validationMessage('#password_sign_up', "Please enter a valid password.")
+                return;
+
+            } else if (tel.length <= 0) {
+                validationMessage('#tel_sign_up', "Please enter a valid tel number.")
+                return;
+            }
+
 
             $.ajax({
                 url: "./login/signup_check.php",
@@ -131,11 +173,38 @@
 
 
         $("#form").on('submit', function(e) {
-
             e.preventDefault();
-
             var form = $('form')[0];
             var data = new FormData(form);
+            /**validation Begins */
+            validationPass(["#name", "#open_time", "#close_time", "#description", "#contact", "#tel",
+                "#price"
+            ]);
+
+            if ($('#name').val().length <= 0) {
+                validationMessage('#name', "Please enter a valid name.")
+                return;
+            } else if ($('#open_time').prop('selectedIndex') <= 0) {
+                validationMessage('#open_time', "Please enter a valid open time.")
+                return;
+            } else if ($('#close_time').prop('selectedIndex') <= 0) {
+                validationMessage('#close_time', "Please enter a valid close time.")
+                return;
+            } else if ($('#description').val().length <= 0) {
+                validationMessage('#description', "Please enter a valid description.")
+                return;
+            } else if ($('#contact').val().length <= 0) {
+                validationMessage('#contact', "Please enter a valid contact.")
+                return;
+            } else if ($('#tel').val().length <= 0) {
+                validationMessage('#tel', "Please enter a valid tel.")
+                return;
+            } else if ($('#price').val().length <= 0) {
+                validationMessage('#price', "Please enter a valid price.")
+                return;
+            }
+            /**validation ENDs */
+
 
             $.ajax({
                 url: "./home/action.php",
