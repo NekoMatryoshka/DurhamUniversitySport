@@ -220,7 +220,19 @@ if(!isset($_SESSION["id"]))
 					</li>
 
 					<li class="nav-item">
-						<a class="nav-link" href="../members/main.php">Members</a>
+						<?php 
+        				if(!isset($_SESSION["type"]) || $_SESSION["type"] == "user" )
+						{?>
+							<a class="nav-link" href="../members/main.php">My Info</a>
+						<?php 
+						}	
+						else
+						{
+						?>	
+							<a class="nav-link" href="../members/main.php">Members</a>
+						<?php 
+						}
+						?>
 					</li>
 				</ul>
 				<ul class="navbar-nav navbar-right">
@@ -287,7 +299,7 @@ if(!isset($_SESSION["id"]))
 		<!-- footer -->
 		<nav class="navbar navbar-dark text-right" style="background-color:#742F68;">
 			<div class="col-12">
-				<span class="navbar-text text-white">Â© 2019 DUS - Group9</span>
+				<span class="navbar-text text-white">© 2019 DUS - Group9</span>
 			</div>
 		</nav>
 		
