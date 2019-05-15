@@ -39,18 +39,36 @@ if(!isset($_SESSION["id"]))
 
         function load_data(query) {
 
-            $.ajax({
-                url: "load.php",
-                method: "POST",
-                data: {
-                    query: query
-                },
-                success: function(data) {
-                    $('#data').html(data);
-                }
-            });
+            var session_type = $("#session_type").val();
+				var session_id = $("#session_id").val();
+				
+				$.ajax({
+					url:"load.php",
+					method:"POST",
+					data:{
+						query:query, 
+						session_type:session_type, 
+						session_id:session_id
+					},
+					success:function(data)
+					{
+						$('#data').html(data);
+					}
+				});
 
         }
+        
+        $('#search').keyup(function(){
+  			var search = $(this).val();
+  			if(search != '')
+  			{
+   				load_data(search);
+  			}
+  			else
+  			{
+   				load_data();
+  			}
+ 		});
 
         //Add new member
         $("#form").on('submit', function(e) {
@@ -113,8 +131,9 @@ if(!isset($_SESSION["id"]))
 
         //delete
         $(document).on('click', '.delete', function() {
-            var retVal = confirm("Are you sure you want to delete this user?");
-            if (retVal == true) {
+            var session_type = $("#session_type").val();
+            if(confirm("Are you sure you want to delete this account?"))
+            {
                 var id = $(this).attr('id');
                 var action = 'delete';
                 $.ajax({
@@ -130,9 +149,14 @@ if(!isset($_SESSION["id"]))
                         load_data();
                     }
                 });
+                if(session_type == "user"){
+                        window.location.href= "/DUS/login/logout.php";
+                }
                 return true;
-            } else {
-                return false;
+            } 
+            else 
+            {
+            return false;
             }
         });
 
@@ -176,6 +200,8 @@ if(!isset($_SESSION["id"]))
 <body>
 
     <!-- nav1 -->
+    <?php echo "<input type='hidden' name ='session_type' id='session_type' value='".$_SESSION["type"]."'/>"; ?>
+	<?php echo "<input type='hidden' name ='session_id' id='session_id' value='".$_SESSION["id"]."'/>"; ?>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color:#742F68">
         <div class="container-fluid">
 
@@ -211,7 +237,19 @@ if(!isset($_SESSION["id"]))
                     <a class="nav-link" href="../bookings/main.php">Bookings</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="">Members</a>
+                    	<?php 
+        				if(!isset($_SESSION["type"]) || $_SESSION["type"] == "user" )
+						{?>
+							<a class="nav-link" href="./members/main.php">My Info</a>
+						<?php 
+						}	
+						else
+						{
+						?>	
+							<a class="nav-link" href="./members/main.php">Members</a>
+						<?php 
+						}
+						?>
                 </li>
             </ul>
             <ul class="navbar-nav navbar-right">
@@ -244,28 +282,39 @@ if(!isset($_SESSION["id"]))
     </nav>
 
     <!-- contents -->
-    <div class="container-fluid">
-        <h1 class="mt-4">Members List</h1>
-        <br>
-
-        <!--search bar-->
-        <div class="form-row">
-            <div class="form-group col-auto">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text" id="btnGroupAddon" style="background-color:#742F68; color:white;">
-                            Search</div>
-                    </div>
-                    <input type="text" name="search" id="search" class="form-control" placeholder="Enter text here.."
-                        aria-label="Input group example" aria-describedby="btnGroupAddon" maxlength="20" />
-                </div>
-            </div>
-            <div class="col-auto">
-                <button type="button" name="add" id="add" class="btn btn-xs"
-                    style="background-color:#742F68; color:white;">Add Member</button>
-            </div>
-        </div>
-
+        <?php 
+        if($_SESSION["type"] == "admin")
+		{?>
+		<div class="container-fluid">
+			<h1 class="mt-4">Members List</h1>
+			<br>
+			
+			<!--search bar-->
+			<div class="form-row">
+    			<div class="form-group col-auto">
+      				<div class="input-group">
+   		 				<div class="input-group-prepend">
+      					<div class="input-group-text" id="btnGroupAddon" style="background-color:#742F68; color:white;">Search</div>
+    					</div>
+    					<input type="text" name="search" id="search" class="form-control" placeholder="Enter text here.." aria-label="Input group example" aria-describedby="btnGroupAddon" maxlength = "20"/>
+  					</div>
+    			</div>
+    			<div class="col-auto">
+					<button type="button" name="add" id="add" class="btn btn-xs" style="background-color:#742F68; color:white;">Add Member</button>
+				</div>
+  			</div>
+		<?php 
+		} 
+		else 
+		{ 
+        ?>
+		 <div class="container-fluid">
+			<h1 class="mt-4">My Info</h1>
+			<br>
+		 <?php 
+         } 
+         ?>
+         
         <div id="data"></div>
 
         <!-- modal (insert, update) -->
