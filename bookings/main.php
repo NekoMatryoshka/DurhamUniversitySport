@@ -35,151 +35,208 @@ if(!isset($_SESSION["id"]))
 				
 			var cdate, open_time, close_time;
       		
-			$('#facility').on('change',function(){
-			
-				
-        		 var f_value = $(this).val();
-       			 var f_text = $("#facility option:selected").text();
-      		    
-      		  	 $('#f_id').val(f_value);
-      		     $('#f_name').val(f_text);
-      		     $('#f_dname').val(f_text);
-      		     $('#calendar').fullCalendar('rerenderEvents');		
-      		          
-      		              
-      		     $.ajax({
-					url:"time.php",
-					method:"POST",
-					data:{f_id:f_value},
-					dataType:"json",
-					success:function(data)
-					{				
-						$('#calendar').fullCalendar('option', 'minTime', data.open_time);
-						$('#calendar').fullCalendar('option', 'maxTime', data.close_time);
-						$('#capacity').val(data.capacity);
-						$('#duration').val(data.duration);
-						$('#calendar').fullCalendar('option','slotDuration',data.duration);
-						calendar.fullCalendar('refetchEvents');
-					}	
-				});
-      		          
+			$('#facility').on('change',function(){				
+				var f_value = $(this).val();
+				var f_text = $("#facility option:selected").text();
+				$('#f_id').val(f_value);
+				$('#f_name').val(f_text);
+				$('#f_dname').val(f_text);
+				$('#calendar').fullCalendar('rerenderEvents');		
+      		  	 
+				if(f_value =="all"){
+					$('#calendar').fullCalendar('option', 'minTime', '06:00');
+					$('#calendar').fullCalendar('option', 'maxTime', '24:00');
+					$('#calendar').fullCalendar('option','slotDuration',"00:30:00");
+					calendar.fullCalendar('refetchEvents');
+				}
+				else
+				{
+					 $.ajax({
+						url:"time.php",
+						method:"POST",
+						data:{f_id:f_value},
+						dataType:"json",
+						success:function(data)
+						{				
+							$('#calendar').fullCalendar('option', 'minTime', data.open_time);
+							$('#calendar').fullCalendar('option', 'maxTime', data.close_time);
+							$('#capacity').val(data.capacity);
+							$('#duration').val(data.duration);
+							$('#calendar').fullCalendar('option','slotDuration',data.duration);
+							calendar.fullCalendar('refetchEvents');
+						}	
+					});
+				}      
   			 });
+  			
   			 
-  			 $('#start_time').on('selectTime', function(){
-  			 	start_time = $('#start_time').val();
-  			 });
-  			 
-  			 $('#end_time').on('selectTime', function(){
-        		var end_time = $('#end_time').val(); 
-        		
-        		if (end_time <= start_time){
-        			alert("The End Time is must be later than The Start Time");
-        			$('#end_time').val(""); 
-        		}
-    		 });
-  			 
-	
 			var calendar = $('#calendar').fullCalendar({
-		
+			
 				header: {
 				left: 'prev,next today',
 				center: 'title',
 				right: 'month,agendaWeek,agendaDay,listWeek'
 				},
-				
+				height: 600,
 				selectable:true,
+				selectConstraint: 
+				{
+        			start: $.fullCalendar.moment().subtract(1, 'days'),
+        			end: $.fullCalendar.moment().startOf('month').add(3, 'month')
+   				},
 				eventLimit: true,
 				slotDuration : '00:30:00',
-				events : 'load.php',
 				eventStartEditable : true,
 				slotEventOverlap : false,
 				scrollTime: '09:00:00',
-				
+				events: {
+					url: 'load.php',
+					type: 'POST',
+					data: {session_id:$("#session_id").val()}
+				},
 				
 				eventRender: function eventRender( event, element, view ) {
         			return ['all', event.f_id].indexOf($('#facility').val()) >= 0;
-        			
     			},
     			
+				eventAfterRender: function(event, element, view) {
+					if (view.name == "agendaDay")
+					{
+						$(element).css('width','90px');
+					}
+				},
+				
 				selectAllow: function(selectInfo) { 
-					var hour = $('#duration').val();
-					var decimal_hour = moment.duration(hour).asHours();
-					var duration = moment.duration(selectInfo.end.diff(selectInfo.start));			
-					return duration.asHours() <= decimal_hour;
+						var hour = $('#duration').val();
+						var decimal_hour = moment.duration(hour).asHours();
+						var duration = moment.duration(selectInfo.end.diff(selectInfo.start));			
+						return duration.asHours() <= decimal_hour;	
 				},
 				
 				select: function(start, end, allDay)
 				{
-					
-					if($('#facility').val() == "all"){
-						alert("Please select the facility");
-					} 
-					else
-					{
-					
-						var m_id = '<?php echo $_SESSION['id']?>';
-						var m_name = '<?php echo $_SESSION['m_id']?>';
-						var f_id = $("#facility").val();
-						var f_name = $("#facility option:selected").text();
-						var start_time = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
-						var end_time = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
-						var capacity = $('#capacity').val();
+					$("#start_time").val($.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss"));
+					$("#end_time").val($.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss"));
+									
+						if($('#facility').val() == "all")
+						{
+							alert("Please select the facility");
+						} 
+						else
+						{
 						
-						$.ajax({  
-							url:"insert.php",  
-							method:"POST",  
-							data:{
-								m_id:m_id,
-								m_name:m_name,
-								f_id:f_id,
-								f_name:f_name,
-								capacity:capacity,
-								date:cdate,
-								start_time:start_time,
-								end_time:end_time
-							},  
-							success:function(data)  
-							{  
-								alert(data);
-								calendar.fullCalendar('refetchEvents');
-							}    	
-						}); 		
-					}	
+							if($("#session_type").val() == "user")
+							{
+								if(confirm("Are you sure you want to book?"))
+								{
+									var m_id = '<?php echo $_SESSION['id']?>';
+									var m_name = '<?php echo $_SESSION['m_id']?>';
+									var f_id = $("#facility").val();
+									var f_name = $("#facility option:selected").text();
+									var start_time = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
+									var end_time = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
+									var capacity = $('#capacity').val();
+									var type = $('#session_type').val();
+		
+									$.ajax({  
+										url:"insert.php",  
+										method:"POST",  
+										data:{
+											m_id:m_id,
+											m_name:m_name,
+											f_id:f_id,
+											f_name:f_name,
+											capacity:capacity,
+											date:cdate,
+											start_time:start_time,
+											end_time:end_time,
+											type:type
+										},  
+										success:function(data)  
+										{  
+											alert(data);
+											calendar.fullCalendar('refetchEvents');
+										}    	
+									}); 
+								}			
+							}
+							else
+							{
+								$('#modal_admin').modal('show');
+				
+							}
+						}		
+    				
 				},
 				
 				dayClick: function(date, jsEvent, view)
 				{
-			
 					cdate = date.format();
 					$('#calendar').fullCalendar('changeView', 'agendaDay');
 					$('#calendar').fullCalendar('gotoDate',cdate);
-					
-			
 				},
 				
 				eventClick:function(event)
 				{
-					if(confirm("Are you sure you want to remove it?"))
-					{
-						var e_id = event.id;
-						$.ajax({
-							url:"delete.php",
-							type:"POST",
-							data:{id:e_id},
-							success:function()
-							{
-								calendar.fullCalendar('refetchEvents');
-							}
-						});
+					var id = $("#session_id").val()
+					var type = $("#session_type").val()
+					if(id == event.title || type == "admin"){
+						if(confirm("Are you sure you want to remove it?"))
+						{
+							var e_id = event.id;
+							$.ajax({
+								   url:"delete.php",
+								   type:"POST",
+								   data:{id:e_id},
+								   success:function()
+								   {
+								   calendar.fullCalendar('refetchEvents');
+								   }
+							});
+						}
 					}
-				},
-				
-				
-				
-			});			
-			
+					else
+					{
+						alert("You can't delete other user's booking");
+					}
 	
-		
+				}
+				
+			});		
+			
+						
+			$('#submit').click(function(){
+				
+				var m_id = $("#member").val();
+				var m_name = $("#member option:selected").text();
+				var f_id = $("#facility").val();
+				var f_name = $("#facility option:selected").text();
+				var start_time = $("#start_time").val();
+				var end_time = $("#end_time").val();
+				var capacity = $('#capacity').val();
+				var type = $('#session_type').val();
+				$.ajax({  
+					url:"insert.php",  
+					method:"POST",  
+					data:{
+						m_id:m_id,
+						m_name:m_name,
+						f_id:f_id,
+						f_name:f_name,
+						capacity:capacity,
+						date:cdate,
+						start_time:start_time,
+						end_time:end_time,
+						type:type
+					},  
+					success:function(data)  
+					{  
+						alert(data);
+						calendar.fullCalendar('refetchEvents');
+						$('#modal_admin').modal('hide')
+					}    	
+				}); 		
+			});
 		});
 		</script>
 
@@ -187,6 +244,10 @@ if(!isset($_SESSION["id"]))
 
   	<body>
   	<!-- nav1 -->
+  		<?php echo "<input type='hidden' name ='start_time' id='start_time' value=''/>"; ?>
+  		<?php echo "<input type='hidden' name ='end_time' id='end_time' value=''/>"; ?>
+  		<?php echo "<input type='hidden' name ='session_type' id='session_type' value='".$_SESSION["type"]."'/>"; ?>
+   	 	<?php echo "<input type='hidden' name ='session_id' id='session_id' value='".$_SESSION["m_id"]."'/>"; ?>
 		<nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#742F68">
 			<div class="container-fluid">
 
@@ -246,7 +307,8 @@ if(!isset($_SESSION["id"]))
 					<li class="nav-item">
 						<button type="button" id="sign_up" class="btn btn-xs" style="background-color:#2F1F20; color:white;">Sign Up</button>
 					</li>
-			  <?php } 
+			  		<?php 
+			  		} 
 					else
 					{?>
 					
@@ -256,7 +318,9 @@ if(!isset($_SESSION["id"]))
 					<li class="nav-item">
 						<a class="nav-link" href="../login/logout.php" style='color:white'>Logout</a>
 					</li>
-			  <?php }?>
+			  		<?php 
+			  		}
+			  		?>
      			</ul>				
 			</div>
 		</nav>
@@ -274,32 +338,47 @@ if(!isset($_SESSION["id"]))
    		 				<div class="input-group-prepend">
       						<div class="input-group-text" style="background-color:#742F68; color:white;">Facility</div>
     					</div>
-    					<?php require 'dropdown.php';?>
+    					<?php require 'dropdown_facilitylist.php';?>
   					</div>
     			</div>
   			</div>
 
 			<!-- calendar -->
-			
 			<input type="hidden" id="capacity">
 			<input type="hidden" id="duration">
 			<div id="calendar"></div><br>
 			
 			<!-- modal -->
+			<div class="modal fade" id="modal_admin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modal_title">Booking</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<label class="col-form-label">Member List</label>
+							<?php require 'dropdown_memberlist.php';?>	
+						</div>
+					
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" id="submit" class="btn btn-primary">Submit</button>
+						</div>
+					
+					</div>
+				</div>
+			</div>	
 
-			<!-- modal end-->
-			
-			
-			
 		</div>
 		<!-- contents end -->
 		
-		
-
 		<!-- footer -->
 		<nav class="navbar navbar-dark text-right" style="background-color:#742F68;">
 			<div class="col-12">
-				<span class="navbar-text text-white">© 2019 DUS - Group9</span>
+				<span class="navbar-text text-white">Â© 2019 DUS - Group9</span>
 			</div>
 		</nav>
 		
