@@ -21,63 +21,64 @@ if($_POST["type"] == "user"){
 	}
 	else
 	{
-		if(isset($_POST["date"])){
-			$date = date("Y-m-d", strtotime($_POST["date"]));
-			$query = "
-			SELECT * FROM bookings WHERE f_id =  '".$_POST["f_id"]."' AND m_id = '".$_POST["m_id"]."' 
-			AND date = '".$date."'
-			";
+		
+		$date = date("Y-m-d", strtotime($_POST["date"]));
+		$query = "
+		SELECT * FROM bookings WHERE f_id =  '".$_POST["f_id"]."' AND m_id = '".$_POST["m_id"]."' 
+		AND date = '".$date."'
+		";
 
+		$statement = $connect->prepare($query);
+		$statement->execute();
+		$result = $statement->fetchAll();
+		$total_row = $statement->rowCount();
+
+		if($total_row > 0)
+		{
+			$output = "You already booked for this facility on ".$date;
+		} 
+		else
+		{	
+			$query = "
+			SELECT * FROM bookings WHERE m_id = '".$_POST["m_id"]."'";
 			$statement = $connect->prepare($query);
 			$statement->execute();
 			$result = $statement->fetchAll();
 			$total_row = $statement->rowCount();
-
-			if($total_row > 0)
+			
+			if($total_row > 4)
 			{
-				$output = "You already booked for this facility on ".$date;
-			} 
+				$output = "You can't book more than 5";
+			}
 			else
 			{
-				if(isset($_POST["m_id"])){
-					$query = "
-					SELECT * FROM bookings WHERE m_id = '".$_POST["m_id"]."'";
-					$statement = $connect->prepare($query);
-					$statement->execute();
-					$result = $statement->fetchAll();
-					$total_row = $statement->rowCount();
-					if($total_row > 4)
-					{
-						$output = "You can't book more than 5";
-					}
-					else
-					{
-						$query = "
-						INSERT INTO bookings 
-						(m_id, m_name, f_id, f_name, date, start_time, end_time) 
-						VALUES ('".$_POST["m_id"]."', '".$_POST["m_name"]."', '".$_POST["f_id"]."', '".$_POST["f_name"]."', 
-						'".$_POST["date"]."', '".$_POST["start_time"]."', '".$_POST["end_time"]."')
-						";
-						$statement = $connect->prepare($query);
-						$statement->execute();
-						$output = "Succeessfully booked";
-					}	
-				}
-				else
-				{
-						$query = "
-						INSERT INTO bookings 
-						(m_id, m_name, f_id, f_name, date, start_time, end_time) 
-						VALUES ('".$_POST["m_id"]."', '".$_POST["m_name"]."', '".$_POST["f_id"]."', '".$_POST["f_name"]."', 
-						'".$_POST["date"]."', '".$_POST["start_time"]."', '".$_POST["end_time"]."')
-						";
-						$statement = $connect->prepare($query);
-						$statement->execute();
-						$output = "Succeessfully booked";
-				}
-			}
-		}
-	}
+				$query = "
+				SELECT * FROM bookings WHERE m_id = '".$_POST["m_id"]."' AND start_time =  '".$_POST["start_time"]."'
+				";
+				$statement = $connect->prepare($query);
+				$statement->execute();
+				$result = $statement->fetchAll();
+				$total_row = $statement->rowCount();
+						
+						if($total_row > 0)
+						{
+							$output = "You already booked other facility on this time";
+						}
+						else
+						{
+							$query = "
+							INSERT INTO bookings 
+							(m_id, m_name, f_id, f_name, date, start_time, end_time) 
+								VALUES ('".$_POST["m_id"]."', '".$_POST["m_name"]."', '".$_POST["f_id"]."', '".$_POST["f_name"]."', 
+							'".$_POST["date"]."', '".$_POST["start_time"]."', '".$_POST["end_time"]."')
+							";
+							$statement = $connect->prepare($query);
+							$statement->execute();
+							$output = "Succeessfully booked";
+						}
+			}					
+		}	
+	}			
 }
 else
 {
