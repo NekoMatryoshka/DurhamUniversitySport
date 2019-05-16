@@ -240,13 +240,13 @@ if(!isset($_SESSION["id"]))
                     	<?php 
         				if(!isset($_SESSION["type"]) || $_SESSION["type"] == "user" )
 						{?>
-							<a class="nav-link" href="./members/main.php">My Info</a>
+							<a class="nav-link" href="">My Info</a>
 						<?php 
 						}	
 						else
 						{
 						?>	
-							<a class="nav-link" href="./members/main.php">Members</a>
+							<a class="nav-link" href="">Members</a>
 						<?php 
 						}
 						?>
