@@ -21,9 +21,12 @@ if(!isset($_SESSION["id"]))
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css" />
+        <link rel="stylesheet" type="text/css" href="../public/css/style.css"/>
+
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js"></script>	
-			
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js"></script>
+
+
 		<script>
   
 		$(document).ready(function(){  	
@@ -254,10 +257,10 @@ if(!isset($_SESSION["id"]))
 				<img src="../public/img/team_durham.png" width="80" height="80" class="d-inline-block align-top" alt="">
 			</a>
 
-			<h4 class="navbar-text" style="color:#CB9DCC">DURHAM UNIVERSITY<font color="white"> SPORT</font></h3>
+			<h3 class="navbar-text" style="color:#CB9DCC">DURHAM UNIVERSITY<font color="white"> SPORT</font></h3>
 
 			<a class="pull-right" href="http://dur.ac.uk">
-				<img src="../public/img/durham_univ.png" width="126" height="56" alt="">
+				<img src="../public/img/durham_univ.png" width="126" height="56" class="pull-right-img" alt="">
 			</a>
 
 			</div>
@@ -377,7 +380,7 @@ if(!isset($_SESSION["id"]))
 		<!-- footer -->
 		<nav class="navbar navbar-dark text-right" style="background-color:#742F68;">
 			<div class="col-12">
-				<span class="navbar-text text-white">© 2019 DUS - Group9</span>
+				<span class="navbar-text text-white">ï¿½ 2019 DUS - Group9</span>
 			</div>
 		</nav>
 		
