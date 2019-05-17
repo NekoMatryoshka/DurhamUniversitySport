@@ -16,17 +16,19 @@ foreach($result as $row)
 		$data[]= array(
 			'id' => $row["id"],
 			'f_id' => $row["f_id"],
+			'f_name' => $row["f_name"],
 			'title' => $row["m_name"],
 			'start' => $row["start_time"],
 			'end' => $row["end_time"],
 			'color' =>  "yellow"
 		);
-	} 
+	}
 	else
 	{
 		$data[]= array(
 			'id' => $row["id"],
 			'f_id' => $row["f_id"],
+			'f_name' => $row["f_name"],
 			'title' => $row["m_name"],
 			'start' => $row["start_time"],
 			'end' => $row["end_time"]
