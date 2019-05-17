@@ -20,7 +20,8 @@ foreach($result as $row)
 			'title' => $row["m_name"],
 			'start' => $row["start_time"],
 			'end' => $row["end_time"],
-			'color' =>  "yellow"
+			'color' =>  "#742F68",
+			'textColor' => 'white'
 		);
 	}
 	else
@@ -31,7 +32,9 @@ foreach($result as $row)
 			'f_name' => $row["f_name"],
 			'title' => $row["m_name"],
 			'start' => $row["start_time"],
-			'end' => $row["end_time"]
+			'end' => $row["end_time"],
+			'color' =>  "grey",
+			'textColor' => 'white'
 		);
 	}
 }
