@@ -21,7 +21,6 @@ if(!isset($_SESSION["id"]))
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../public/css/style.css"/>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script>
@@ -210,11 +209,11 @@ if(!isset($_SESSION["id"]))
                 <img src="../public/img/team_durham.png" width="80" height="80" class="d-inline-block align-top" alt="">
             </a>
 
-            <h3 class="navbar-text" style="color:#CB9DCC">DURHAM UNIVERSITY<font color="white"> SPORT</font>
+            <h4 class="navbar-text" style="color:#CB9DCC">DURHAM UNIVERSITY<font color="white"> SPORT</font>
                 </h3>
 
                 <a class="pull-right" href="http://dur.ac.uk">
-                    <img src="../public/img/durham_univ.png" width="126" height="56" class="pull-right-img" alt="">
+                    <img src="../public/img/durham_univ.png" width="126" height="56" alt="">
                 </a>
 
         </div>

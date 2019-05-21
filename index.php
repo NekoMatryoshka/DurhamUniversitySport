@@ -12,7 +12,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="public/css/style.css"/>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
@@ -133,6 +132,10 @@
 
         $('#submit_sign_up').click(function() {
 
+            var password = $('#password_sign_up').val();
+            var name = $('#name_sign_up').val();
+            var email = $('#email_sign_up').val();
+            var tel = $('#tel_sign_up').val();
 
             var id = $('#id_sign_up').val();
             var password = $('#password_sign_up').val();
@@ -396,11 +399,11 @@
                 <img src="./public/img/team_durham.png" width="80" height="80" class="d-inline-block align-top" alt="">
             </a>
 
-            <h3 class="navbar-text" style="color:#CB9DCC">DURHAM UNIVERSITY<font color="white"> SPORT</font>
+            <h4 class="navbar-text" style="color:#CB9DCC">DURHAM UNIVERSITY<font color="white"> SPORT</font>
                 </h3>
 
                 <a class="pull-right" href="http://dur.ac.uk">
-                    <img src="./public/img/durham_univ.png" width="126" height="56" class="pull-right-img" alt="">
+                    <img src="./public/img/durham_univ.png" width="126" height="56" alt="">
                 </a>
 
         </div>
@@ -426,17 +429,17 @@
                     <a class="nav-link" href="./bookings/main.php">Bookings</a>
                 </li>
                 <li class="nav-item" style="<?php if(!isset($_SESSION["type"])){echo "display:none";}?>">
-                    <?php 
+        				<?php 
         				if(!isset($_SESSION["type"]) || $_SESSION["type"] == "user" )
 						{?>
-                    <a class="nav-link" href="./members/main.php">My Info</a>
-                    <?php 
+							<a class="nav-link" href="./members/main.php">My Info</a>
+						<?php 
 						}	
 						else
 						{
-						?>
-                    <a class="nav-link" href="./members/main.php">Members</a>
-                    <?php 
+						?>	
+							<a class="nav-link" href="./members/main.php">Members</a>
+						<?php 
 						}
 						?>
                 </li>
@@ -460,7 +463,7 @@
 					{?>
 
                 <li class="nav-item">
-                    <?php echo "<span class='navbar-text' style='color:white'> Welcome  ".$_SESSION["name"].". ID ".$_SESSION["id"]."  Type: ".$_SESSION["type"]."&nbsp;&nbsp;</span>"; ?>
+                    <?php echo "<span class='navbar-text' style='color:white'> Welcome  ".$_SESSION["name"]." Type: ".$_SESSION["type"]."&nbsp;&nbsp;</span>"; ?>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="./login/logout.php" style='color:white'>Logout</a>
@@ -623,7 +626,11 @@
 
                             <div class="form-row">
                                 <div class="col">
+<<<<<<< HEAD
                                     <label class="col-form-label">Price(ï¿½) per session</label>
+=======
+                                    <label class="col-form-label">Price(£) per hour</label>
+>>>>>>> bd5a193a0190e33caa11356cfc3dcd92717dfa35
                                     <input type="text" class="form-control" id="price" name="price" maxlength="10"
                                         placeholder="number">
                                 </div>
@@ -783,6 +790,7 @@
                         </div>
 
                         <div class="form-group">
+<<<<<<< HEAD
                             <label class="col-form-label">Email</label>
                             <input type="text" class="form-control" id="email_sign_up" maxlength="50" placeholder="Email"/>
                         </div>
@@ -796,6 +804,11 @@
                                     Email
                                 </button>
                             </div>
+=======
+                            <label class="col-form-label">Password</label>
+                            <input type="password" class="form-control" id="password_sign_up" maxlength="50"
+                                placeholder="Password" />
+>>>>>>> bd5a193a0190e33caa11356cfc3dcd92717dfa35
                         </div>
 
                         <div class="form-group">
@@ -821,7 +834,7 @@
     <!-- footer -->
     <nav class="navbar navbar-dark text-right" style="background-color:#742F68;">
         <div class="col-12">
-            <span class="navbar-text text-white">ï¿½ 2019 DUS - Group9</span>
+            <span class="navbar-text text-white">© 2019 DUS - Group9</span>
         </div>
     </nav>
 
