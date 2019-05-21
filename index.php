@@ -463,7 +463,7 @@
 					{?>
 
                 <li class="nav-item">
-                    <?php echo "<span class='navbar-text' style='color:white'> Welcome  ".$_SESSION["name"]." Type: ".$_SESSION["type"]."&nbsp;&nbsp;</span>"; ?>
+                    <?php echo "<span class='navbar-text' style='color:white'> Welcome  ".$_SESSION["name"].". ID: ".$_SESSION["m_id"]."  Type: ".$_SESSION["type"]."&nbsp;&nbsp;</span>"; ?>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="./login/logout.php" style='color:white'>Logout</a>
