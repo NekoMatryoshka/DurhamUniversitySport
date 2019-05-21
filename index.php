@@ -182,7 +182,7 @@
                         alert("Your account is successfully created");
                         window.location.href = "/DUS/index.php";
                     } else if (data == "fail") {
-                        alert("Your ID alreay exists");
+                        alert("Your ID or E-mainl already exists");
                         $('#id_sign_up').val("");
                     } else {
                         alert("Confirmation code uncorrect");
@@ -629,7 +629,7 @@
 <<<<<<< HEAD
                                     <label class="col-form-label">Price(ï¿½) per session</label>
 =======
-                                    <label class="col-form-label">Price(£) per hour</label>
+                                    <label class="col-form-label">Price(ï¿½) per hour</label>
 >>>>>>> bd5a193a0190e33caa11356cfc3dcd92717dfa35
                                     <input type="text" class="form-control" id="price" name="price" maxlength="10"
                                         placeholder="number">
@@ -834,7 +834,7 @@
     <!-- footer -->
     <nav class="navbar navbar-dark text-right" style="background-color:#742F68;">
         <div class="col-12">
-            <span class="navbar-text text-white">© 2019 DUS - Group9</span>
+            <span class="navbar-text text-white">ï¿½ 2019 DUS - Group9</span>
         </div>
     </nav>
 
