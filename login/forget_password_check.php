@@ -8,7 +8,7 @@
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $id = $_SESSION['id_reset_password'];
 
-	if($confirmationCode != $sentConfirmationCode){
+	if(!isset($confirmationCode) || $confirmationCode != $sentConfirmationCode){
 		echo "email fail";
 		die();
 	}

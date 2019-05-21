@@ -48,6 +48,42 @@
 
         });
 
+        $('#forget_password').click(function () {
+
+            $('#modal_forget_password').modal('show');
+
+        });
+
+        $('#reset_forget_password').click(function () {
+
+            var confirmation_code = $('#confirmation_code_forget_password').val().toUpperCase();
+            var password = $('#new_password_forget_password').val();
+
+            validationPass(['#new_password_forget_password']);
+
+            if (!password.match(/^[a-zA-Z0-9]{6,20}$/)) {
+                validationMessage('#new_password_forget_password', "6-20 characters consisted of numbers or letters only.")
+                return;
+
+            }
+
+            $.ajax({
+                url: "./login/forget_password_check.php",
+                method: "POST",
+                data: {confirmation_code: confirmation_code, password: password},
+                success: function (data) {
+                    if (data == "success") {
+                        alert("Password has been reset");
+                        window.location.href = "/DUS/index.php";
+                    } else {
+                        alert("Confirmation code is uncorrect");
+                    }
+                }
+            });
+
+
+        });
+
         $('#submit_sign_in').click(function() {
 
             var id = $('#id_sign_in').val();
@@ -98,10 +134,11 @@
         $('#submit_sign_up').click(function() {
 
 
+            var id = $('#id_sign_up').val();
             var password = $('#password_sign_up').val();
             var name = $('#name_sign_up').val();
             var email = $('#email_sign_up').val();
-            var confirmation_code = $('#confirmation_code_sign_up').val();
+            var confirmation_code = $('#confirmation_code_sign_up').val().toUpperCase();
             var tel = $('#tel_sign_up').val();
 
             validationPass(["#id_sign_up", "#password_sign_up", "#name_sign_up", "#email_sign_up",
@@ -116,8 +153,8 @@
             } else if (email.length <= 0 || !isEmail(email)) {
                 validationMessage('#email_sign_up', "Please enter a valid email email.")
                 return;
-            } else if (password.length <= 0) {
-                validationMessage('#password_sign_up', "Please enter a valid password.")
+            } else if (!password.match(/^[a-zA-Z0-9]{6,20}$/)) {
+                validationMessage('#password_sign_up', "6-20 characters consisted of numbers or letters only.")
                 return;
 
             } else if (tel.length <= 0) {
@@ -130,21 +167,26 @@
                 url: "./login/signup_check.php",
                 method: "POST",
                 data: {
+                    id: id,
                     password: password,
                     name: name,
                     email: email,
-                    tel: tel
+                    tel: tel,
+                    confirmation_code: confirmation_code
                 },
-                success: function(data) {
+                success: function (data) {
                     if (data == "success") {
                         alert("Your account is successfully created");
-                        location.reload(true);
+                        window.location.href = "/DUS/index.php";
+                    } else if (data == "fail") {
+                        alert("Your ID alreay exists");
+                        $('#id_sign_up').val("");
                     } else {
-                        alert("Your email already exists. Please try another email.");
+                        alert("Confirmation code uncorrect");
+                        $('#confirmation_code_sign_up').val("");
                     }
                 }
             });
-
 
         });
 
@@ -168,6 +210,68 @@
             $('#modal').modal('show');
         });
 
+        function ButtonCountdown(button) {
+            // set a timer of 60s to prevent too much emails sent.
+            button.attr("disabled", true);
+            button.html("Resend in 60s");
+
+            var counter = 60;
+            // set a counter of 60 that will be deducted by 1 every 1000 ms, which in total is 1 min.
+            var timer = setInterval(function () {
+                counter--;
+                if (counter < 0) {
+                    button.attr('disabled', false);
+                    button.html("Send Email");
+                    clearInterval(timer);
+                } else {
+                    button.html("Resend in " + counter + "s");
+                }
+            }, 1000);
+        }
+
+        $('#button_confirmation_code_sign_up').click(function (e) {
+            e.preventDefault();
+
+            var email = $('#email_sign_up').val();
+
+            $.ajax({
+                url: "./login/email_sign_up_check.php",
+                method: "POST",
+                dataType: "TEXT",
+                data: {email: email},
+                success: function (data) {
+                    if (data != "true") {
+                        alert("Invalid Email Address");
+                    } else {
+                        var thisButton = $('#button_confirmation_code_sign_up');
+                        ButtonCountdown(thisButton);
+                    }
+                }
+            });
+        });
+
+        $('#button_confirmation_code_forget_password').click(function (e) {
+            e.preventDefault();
+
+            var id = $('#id_forget_password').val();
+
+            $.ajax({
+                url: "./login/email_forget_password_check.php",
+                method: "POST",
+                dataType: "TEXT",
+                data: {id: id},
+                success: function (data) {
+                    if (data == "true") {
+                        var thisButton = $('#button_confirmation_code_forget_password');
+                        ButtonCountdown(thisButton);
+                    } else if (data == "exist fail") {
+                        alert("Account ID does not exist");
+                    } else {
+                        alert("Sending email failed, please try later");
+                    }
+                }
+            });
+        });
 
         $("#form").on('submit', function(e) {
             e.preventDefault();
@@ -383,8 +487,11 @@
                 </div>
             </div>
             <div class="col-auto">
-                <button type="button" id="add" class="btn btn-xs" style="background-color:#742F68; color:white;">Add New
-                    Facility</button>
+                <?php 
+                    if(isset($_SESSION['type']) && $_SESSION['type']=='admin'){
+                        echo "<button type='button' id='add' class='btn btn-xs' style='background-color:#742F68; color:white;'>Add New Facility</button>";
+                    }
+                ?>
             </div>
         </div>
 
@@ -516,7 +623,7 @@
 
                             <div class="form-row">
                                 <div class="col">
-                                    <label class="col-form-label">Price(�) per hour</label>
+                                    <label class="col-form-label">Price(�) per session</label>
                                     <input type="text" class="form-control" id="price" name="price" maxlength="10"
                                         placeholder="number">
                                 </div>
@@ -562,6 +669,52 @@
             </div>
         </div>
 
+        <!-- modal forget password-->
+        <div class="modal fade" id="modal_forget_password" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal_title">Forget Password</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                          <label class="col-form-label">ID</label>
+                           <input type="text" class="form-control" id="id_forget_password" maxlength="50"
+                               placeholder="ID"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label">Confirmation Code</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="confirmation_code_forget_password" maxlength="5"
+                                   placeholder="Confirmation Code From Email"/>
+                                <button type="button" id="button_confirmation_code_forget_password" class="btn btn-success">
+                                Send Email
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label">New Password</label>
+                            <input type="password" class="form-control" id="new_password_forget_password" maxlength="50"
+                               placeholder="6-20 characters consisted of numbers or letters only."/>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" id="reset_forget_password" class="btn btn-primary">Reset Password</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- modal sign in-->
         <div class="modal fade" id="modal_sign_in" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -576,9 +729,9 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label class="col-form-label">Email Address or ID</label>
+                            <label class="col-form-label">ID</label>
                             <input type="text" class="form-control" id="id_sign_in" maxlength="50"
-                                placeholder="Email Address or ID" />
+                                placeholder="ID" />
                         </div>
 
                         <div class="form-group">
@@ -589,6 +742,9 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" id="forget_password" class="btn btn-danger" data-dismiss="modal">Forget
+                                Password
+                            </button>
                             <button type="button" id="submit_sign_in" class="btn btn-primary">Submit</button>
                         </div>
 
@@ -609,34 +765,43 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label class="col-form-label">Name</label>
-                            <input type="text" class="form-control" id="name_sign_up" maxlength="50"
-                                placeholder="Name" />
-                        </div>
-
-
-                        <div class="form-group">
-                            <label class="col-form-label">Email</label>
-                            <input type="text" class="form-control" id="email_sign_up" maxlength="50"
-                                placeholder="Email" />
-                        </div>
-
+                        
                         <div class="form-group">
                             <label class="col-form-label">ID</label>
-                            <input type="text" class="form-control" id="id_sign_up" maxlength="50" placeholder="ID" />
+                            <input type="text" class="form-control" id="id_sign_up" maxlength="50" placeholder="ID"/>
                         </div>
 
                         <div class="form-group">
                             <label class="col-form-label">Password</label>
                             <input type="password" class="form-control" id="password_sign_up" maxlength="50"
-                                placeholder="Password" />
+                                   placeholder="6-20 characters consisted of numbers or letters only."/>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label">Name</label>
+                            <input type="text" class="form-control" id="name_sign_up" maxlength="50" placeholder="Name"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label">Email</label>
+                            <input type="text" class="form-control" id="email_sign_up" maxlength="50" placeholder="Email"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label">Confirmation Code</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="confirmation_code_sign_up" maxlength="5"
+                                       placeholder="Confirmation Code From Email"/>
+                                <button type="button" id="button_confirmation_code_sign_up" class="btn btn-success">Send
+                                    Email
+                                </button>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-form-label">Tel</label>
                             <input type="text" class="form-control" id="tel_sign_up" maxlength="50"
-                                placeholder="Phone Number" />
+                                   placeholder="Phone Number"/>
                         </div>
 
                         <div class="modal-footer">

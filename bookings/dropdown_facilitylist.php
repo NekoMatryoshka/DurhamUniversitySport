@@ -6,8 +6,9 @@
 	$statement->execute();
 	$result = $statement->fetchAll();
 	$total_row = $statement->rowCount();
-	$output ='<select id="facility" name="facility" class="form-control">
-				<option value="all">All</option>';
+	$output = '';
+	// $output ='<select id="facility" name="facility" class="form-control">
+	// 			<option value="all">All</option>';
 	if($total_row > 0)
 	{
 		foreach($result as $row)
@@ -15,6 +16,6 @@
 			$output .= '<option value="'.$row["id"].'">'.$row["name"].'</option>';
 		}
 	}
-	$output.='</select>';
+	// $output.='</select>';
 	echo $output;
 ?>

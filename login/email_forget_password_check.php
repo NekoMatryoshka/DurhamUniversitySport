@@ -26,8 +26,6 @@
             $_SESSION['id_reset_password'] = $_POST['id'];
             echo "true";
         }
-    } 
+    }   
 
-    
-	
 ?>

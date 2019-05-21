@@ -3,6 +3,7 @@
 //insert.php
 
 require '../DB/DB_Connection.php';
+require_once('../util/email.php');
 
 if($_POST["type"] == "user"){
 
@@ -75,6 +76,38 @@ if($_POST["type"] == "user"){
 							$statement = $connect->prepare($query);
 							$statement->execute();
 							$output = "Succeessfully booked";
+
+							// email sending
+							$memberId = $_POST["m_id"];
+							$bookingId = $connect->lastInsertId();
+							$username = $_POST["m_name"];
+							$facilityId = $_POST["f_id"];
+							$facilityName = $_POST["f_name"];
+							$startTime = substr($_POST["start_time"], 0, -3);
+							$endTime = substr($_POST["end_time"], 0, -3);
+
+							$query = "SELECT * FROM facilities WHERE id = '$facilityId'";
+							$statement = $connect->prepare($query);
+							$statement->execute();
+							$result = $statement->fetch();
+							$pay = $result['price'];
+							//*(strtotime($endTime) - strtotime($startTime))/60/60
+
+							$query = "SELECT * FROM members WHERE id = '$memberId'";
+							$statement = $connect->prepare($query);
+							$statement->execute();
+							$result = $statement->fetch();
+							$to = $result['email'];
+							if (substr("95223131@durham.ac.uk", -13) == '@durham.ac.uk')
+								$pay *= 0.8;
+
+							$bookingDetail = array("bookingId"=>$bookingId,
+													"facilityName"=>$facilityName,
+													"startTime"=>$startTime,
+													"endTime"=>$endTime,
+													"pay"=>$pay
+							);
+							sendBookingConfirmationEmail($to, $username, $bookingDetail);
 						}
 			}					
 		}	
@@ -84,7 +117,7 @@ else
 {
 	$query = "SELECT * FROM bookings 
 	WHERE f_id =  '".$_POST["f_id"]."' AND start_time =  '".$_POST["start_time"]."'
-	";	
+	";
 	$statement = $connect->prepare($query);
 	$statement->execute();
 	$result = $statement->fetchAll();

@@ -41,7 +41,7 @@ if(!isset($_SESSION["id"]))
         function load_data(query) {
 
             var session_type = $("#session_type").val();
-				var session_id = $("#session_id").val();
+			var session_id = $("#session_id").val();
 				
 				$.ajax({
 					url:"load.php",
@@ -89,8 +89,8 @@ if(!isset($_SESSION["id"]))
                 validationMessage('#m_id', "Please enter a valid id.")
                 return;
 
-            } else if (password.length <= 0) {
-                validationMessage('#password', "Please enter a valid password.")
+            } else if (!password.match(/^[a-zA-Z0-9]{6,20}$/)) {
+                validationMessage('#password', "6-20 characters consisted of numbers or letters only.")
                 return;
 
             } else if (name.length <= 0) {
@@ -185,7 +185,7 @@ if(!isset($_SESSION["id"]))
                     $('#action').val('update');
                     $('#submit').val('Update');
 
-                    $('#modal_title').html("Update Facility");
+                    $('#modal_title').html("Update Account");
                     $('#modal').modal('show');
 
                 }
@@ -343,7 +343,7 @@ if(!isset($_SESSION["id"]))
                             <div class="form-group">
                                 <label class="col-form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" maxlength="50"
-                                    placeholder="Password">
+                                    placeholder="6-20 characters consisted of numbers or letters only.">
                             </div>
 
                             <div class="form-group">

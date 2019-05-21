@@ -7,6 +7,7 @@ function validationMessage(id, message) {
     $(id).css({
         "border": '#FF0000 1px solid'
     });
+    $(id).val("");
     $(id).attr("placeholder", message);
     return;
 }

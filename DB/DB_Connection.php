@@ -4,7 +4,7 @@
 
 
 $mysql_hostname = 'localhost';  // database host
-$mysql_port = 8889;
+$mysql_port = 3306;
 $mysql_username = 'root';				//database username
 $mysql_password = 'root';				//database password
 $mysql_dbname = 'DUS';			//database username

@@ -62,14 +62,15 @@ function sendSecurityConfirmationEmail($to, $username) {
         return false;
 }
 
+function sendBookingcancellationEmail($to, $username, $bookingId) {
+    $subject = "DSU: Booking Concellation";
+    $message = "Hello $username,<br/>Your booking number <b>$bookingId</b> has been cancelled.";
+    return sendSecureEmail($to, $username, $subject, $message);
+}
+
 function sendBookingConfirmationEmail($to, $username, $bookingDetail){
     $bookingId = $bookingDetail['bookingId'];
-    $facilityNames = $bookingDetail['facilityNames'];
-    $facilityNameList = "";
-    foreach ($facilityNames as $name) {
-        $facilityNameList.=$name.", ";
-    }
-    $facilityNameList= substr($facilityNameList,0,strlen($facilityNameList)-2).".";
+    $facilityName = $bookingDetail['facilityName'];
     $startTime = $bookingDetail['startTime'];
     $endTime = $bookingDetail['endTime'];
     $pay = $bookingDetail['pay'];
@@ -78,10 +79,10 @@ function sendBookingConfirmationEmail($to, $username, $bookingDetail){
     $greetings = "Hello $username,<br/>Thank you for your booking. Here is your booking details<br/>";
     //TODO: Add booking detail as well as the payment number here, dont forget the discount for members.
     $bookingMessage = "<table border=1>"
-                    ."<tr><th>Booking Number</th><th>Facilities</th><th>Start Time</th><th>End Time</th></tr>"
-                    ."<tr><td>$bookingId</td><td>$facilityNameList</td><td>$startTime</td><td>$endTime</td></tr>"
+                    ."<tr><th>Booking Number</th><th>Facility</th><th>Start Time</th><th>End Time</th></tr>"
+                    ."<tr><td>$bookingId</td><td>$facilityName</td><td>$startTime</td><td>$endTime</td></tr>"
                     ."</table><br/>";
-    $paymentMessage = "Your total payment for this booking is $pay.";            
+    $paymentMessage = "Your total payment for this booking is <b>$pay pound</b>.";            
     $message = $greetings.$bookingMessage.$paymentMessage;
     return sendSecureEmail($to, $username, $subject, $message);
 }

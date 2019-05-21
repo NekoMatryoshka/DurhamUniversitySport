@@ -47,7 +47,7 @@ if($total_row > 0)
 					<li class="list-group-item"><b>Opening Times: </b>'.$row["open_time"].' - '.$row["close_time"].'</li>
 					<li class="list-group-item"><b>Contact: </b>'.$row["contact"].'</li>
 					<li class="list-group-item"><b>Tel: </b>'.$row["tel"].'</li>
-					<li class="list-group-item"><b>Price: </b>£'.$row["price"].' per hour</li>
+					<li class="list-group-item"><b>Price: </b>£'.$row["price"].' per session</li>
 				</ul>';
 			
 		if (isset($_POST["session"]) && $_POST["session"] == "admin"){
