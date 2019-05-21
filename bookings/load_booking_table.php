@@ -55,7 +55,7 @@ $output = '
 			<th>Booking User</th>
 			<th>Start Time</th>
 			<th>End Time</th>
-			<th>Total Payment</th>
+			<th>Total Payment(£)</th>
 		</tr>
 	';
 		
