@@ -94,7 +94,7 @@ if($total_row > 0)
 			<td width='16%'>$startTime</td>
 			<td width='16%'>$endTime</td>
 			<td width='16%'>$pay</td>
-			<td width=‘4%’>
+			<td width='4%'>
 				<button type='button' name='delete' class='btn btn-outline-danger delete' id='$bookingId'>Del</button>
 			</td>
 		</tr>";
