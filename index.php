@@ -113,7 +113,7 @@
                     if (data == "success") {
                         location.reload(true);
                     } else {
-                        alert("Invalid Email or Password");
+                        alert("Invalid ID or Password");
                     }
                 }
             });
