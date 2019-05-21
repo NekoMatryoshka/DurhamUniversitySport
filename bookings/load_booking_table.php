@@ -7,11 +7,40 @@ $user_id = $_SESSION['id'];
 
 
 if($user_type == "admin"){
-	$query = "SELECT * FROM bookings";	
+
+	if(isset($_POST["query"]))
+	{	
+		$search = $_POST["query"];
+		$query = "
+		SELECT * FROM bookings 
+		WHERE f_name LIKE '%".$search."%'
+		OR m_name LIKE '%".$search."%'
+		OR start_time LIKE '%".$search."%'
+		OR end_time LIKE '%".$search."%'
+		";
+	}
+	else
+	{
+		$query = "SELECT * FROM bookings";	
+	}
 }
 else
 {
-    $query = "SELECT * FROM bookings WHERE m_id = '$user_id'";		
+	if(isset($_POST["query"]))
+	{	
+		$search = $_POST["query"];
+		$query = "
+		SELECT * FROM bookings WHERE m_id = '".$user_id."'
+		AND (f_name LIKE '%".$search."%'
+		OR m_name LIKE '%".$search."%'
+		OR start_time LIKE '%".$search."%'
+		OR end_time LIKE '%".$search."%')
+		";
+	}
+	else
+	{
+		 $query = "SELECT * FROM bookings WHERE m_id = '".$user_id."'";	
+	}	
 }
 
 $statement = $connect->prepare($query);
@@ -65,7 +94,7 @@ if($total_row > 0)
 			<td width='16%'>$startTime</td>
 			<td width='16%'>$endTime</td>
 			<td width='16%'>$pay</td>
-			<td width=â€˜4%â€™>
+			<td width=‘4%’>
 				<button type='button' name='delete' class='btn btn-outline-danger delete' id='$bookingId'>Del</button>
 			</td>
 		</tr>";
