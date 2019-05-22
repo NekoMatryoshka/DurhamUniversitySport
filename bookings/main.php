@@ -129,6 +129,7 @@ if(!isset($_SESSION["id"]))
 				slotDuration : '00:30:00',
 				eventStartEditable : true,
 				slotEventOverlap : false,
+				allDaySlot: false,
 				scrollTime: '09:00:00',
 				events: {
 					url: 'load.php',
