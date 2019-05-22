@@ -111,6 +111,7 @@
                 },
                 success: function(data) {
                     if (data == "success") {
+                        alert("Login Success");
                         location.reload(true);
                     } else {
                         alert("Invalid ID or Password");
