@@ -98,8 +98,10 @@ if($_POST["type"] == "user"){
 							$statement->execute();
 							$result = $statement->fetch();
 							$to = $result['email'];
-							if (substr("95223131@durham.ac.uk", -13) == '@durham.ac.uk')
+							if (substr($to, -13) == '@durham.ac.uk'){
 								$pay *= 0.8;
+								$pay .= " (20% OFF)";
+							}
 
 							$bookingDetail = array("bookingId"=>$bookingId,
 													"facilityName"=>$facilityName,

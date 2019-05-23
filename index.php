@@ -626,11 +626,7 @@
 
                             <div class="form-row">
                                 <div class="col">
-<<<<<<< HEAD
-                                    <label class="col-form-label">Price(�) per session</label>
-=======
                                     <label class="col-form-label">Price(�) per hour</label>
->>>>>>> bd5a193a0190e33caa11356cfc3dcd92717dfa35
                                     <input type="text" class="form-control" id="price" name="price" maxlength="10"
                                         placeholder="number">
                                 </div>
@@ -790,7 +786,6 @@
                         </div>
 
                         <div class="form-group">
-<<<<<<< HEAD
                             <label class="col-form-label">Email</label>
                             <input type="text" class="form-control" id="email_sign_up" maxlength="50" placeholder="Email"/>
                         </div>
@@ -804,11 +799,6 @@
                                     Email
                                 </button>
                             </div>
-=======
-                            <label class="col-form-label">Password</label>
-                            <input type="password" class="form-control" id="password_sign_up" maxlength="50"
-                                placeholder="Password" />
->>>>>>> bd5a193a0190e33caa11356cfc3dcd92717dfa35
                         </div>
 
                         <div class="form-group">

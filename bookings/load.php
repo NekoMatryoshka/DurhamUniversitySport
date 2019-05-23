@@ -19,7 +19,8 @@ foreach($result as $row)
 			'title' => $row["m_name"],
 			'start' => $row["start_time"],
 			'end' => $row["end_time"],
-			'color' =>  "yellow"
+			'color' =>  "yellow",
+			'f_name' => $row["f_name"]
 		);
 	} 
 	else
@@ -29,7 +30,8 @@ foreach($result as $row)
 			'f_id' => $row["f_id"],
 			'title' => $row["m_name"],
 			'start' => $row["start_time"],
-			'end' => $row["end_time"]
+			'end' => $row["end_time"],
+			'f_name' => $row["f_name"]
 		);
 	}
 }

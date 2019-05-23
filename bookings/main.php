@@ -31,7 +31,7 @@ if(!isset($_SESSION["id"]))
   
 		$(document).ready(function(){
 			
-			load_booking_table();  	
+			load_table();  	
 				
 			var cdate, open_time, close_time;
       		
@@ -69,7 +69,7 @@ if(!isset($_SESSION["id"]))
 				}  
   			 });
 
-			$(document).on("click", "#booking_table tr td button", function(){
+			$(document).on("click", "#booking-table tr td button", function(){
 
 				$.ajax({
 					url:"delete.php",
@@ -78,7 +78,23 @@ if(!isset($_SESSION["id"]))
 					success:function()
 					{
 						calendar.fullCalendar('refetchEvents');
-						load_booking_table();
+						load_table();
+						alert("Delete Successfully");
+					}
+				});
+
+			});
+
+			$(document).on("click", "#block-table tr td button", function(){
+
+				$.ajax({
+					url:"delete_block.php",
+					type:"POST",
+					data:{id:this.id},
+					success:function()
+					{
+						calendar.fullCalendar('refetchEvents');
+						load_table();
 						alert("Delete Successfully");
 					}
 				});
@@ -96,7 +112,36 @@ if(!isset($_SESSION["id"]))
 					load_booking_table();
 				}
  			});
+
+			 $('#search_block').keyup(function(){
+  			var search = $(this).val();
+				if(search != '')
+				{
+					load_block_table(search);
+				}
+				else
+				{
+					load_block_table();
+				}
+ 			});
   			
+			function load_table() {
+				load_booking_table();
+				load_block_table();
+			}
+
+			function load_block_table(query){
+				$.ajax({
+					url:"load_block_table.php",
+					method:"POST",
+					data:{query:query}, 
+					success:function(data)
+					{
+						$('#block-table').html(data);
+					}
+				});
+			}
+
   			function load_booking_table(query) {
 			
 				$.ajax({
@@ -110,6 +155,7 @@ if(!isset($_SESSION["id"]))
 				});
 
 			}
+
 			
 			var calendar = $('#calendar').fullCalendar({
 			
@@ -144,7 +190,7 @@ if(!isset($_SESSION["id"]))
 						element.find('.fc-title').append('<div style="text-align:center;"><span style="font-size:10px; text-align:center;">'+event.f_name+'</span></div>');
 					}
 					if(event.type == "block"){
-						return (event.start.isBefore(event.ranges.end) && event.end.isAfter(event.ranges.start));
+						return (event.start.isBefore(event.ranges.end) && event.end.isAfter(event.ranges.start)) && ['all', event.f_id].indexOf($('#facility').val()) >= 0;
 					}
         			return ['all', event.f_id].indexOf($('#facility').val()) >= 0;
     			},
@@ -188,6 +234,7 @@ if(!isset($_SESSION["id"]))
 							method:"POST",  
 							data:{
 								date:cdate,
+								f_id:f_id,
 								start_time:start_time,
 								end_time:end_time,
 							},  
@@ -218,7 +265,7 @@ if(!isset($_SESSION["id"]))
 												{  
 													alert(data);
 													calendar.fullCalendar('refetchEvents');
-													load_booking_table();
+													load_table();
 												}    	
 											}); 
 										}
@@ -237,7 +284,7 @@ if(!isset($_SESSION["id"]))
 					cdate = date.format();
 					$('#calendar').fullCalendar('changeView', 'agendaDay');
 					$('#calendar').fullCalendar('gotoDate',cdate);
-					load_booking_table();
+					load_table();
 				},
 				
 				eventClick:function(event)
@@ -259,7 +306,7 @@ if(!isset($_SESSION["id"]))
 								   success:function()
 								   {
 								    	calendar.fullCalendar('refetchEvents');
-								    	load_booking_table();
+								    	load_table();
 								   }
 							});
 						}
@@ -310,6 +357,12 @@ if(!isset($_SESSION["id"]))
 				if($('#fri_block_booking').is(":checked")){
 					dow+="5,"
 				}
+				if($('#sat_block_booking').is(":checked")){
+					dow+="6,"
+				}
+				if($('#sun_block_booking').is(":checked")){
+					dow+="0,"
+				}
 				if(dow.endsWith(',')) {
 					dow = dow.substr(0, dow.length-1);
 				}
@@ -338,7 +391,7 @@ if(!isset($_SESSION["id"]))
 					{
 						alert(data);
 						calendar.fullCalendar('refetchEvents');
-						load_booking_table();
+						load_table();
 						$('#modal_block_booking').modal('hide');
 					}
 				});
@@ -399,7 +452,7 @@ if(!isset($_SESSION["id"]))
 						alert(data);
 						calendar.fullCalendar('refetchEvents');
 						$('#modal_admin').modal('hide');
-						load_booking_table(); 
+						load_table(); 
 					}    	
 				});	
 			});
@@ -562,7 +615,26 @@ if(!isset($_SESSION["id"]))
     			</div>
   			</div>
             
-			<div id="booking-table"></div>	
+			<div id="booking-table"></div>
+
+			<?php if ($_SESSION['type'] == 'admin'){ echo "
+			<br>
+            <h1 class='mt-4'>Block Bookings List</h1>
+            <br>
+            <!-- search bar -->
+            <div class='form-row'>
+    			<div class='form-group col-auto'>
+      				<div class='input-group'>
+   		 				<div class='input-group-prepend'>
+      					<div class='input-group-text' id='btnGroupAddon' style='background-color:#742F68; color:white;'>Search</div>
+    					</div>
+    					<input type='text' name='search' id='search_block' class='form-control' placeholder='Enter text here..' aria-label='Input group example' aria-describedby='btnGroupAddon' maxlength = '20'/>
+  					</div>
+    			</div>
+  			</div>
+            
+			<div id='block-table'></div>";
+			}?>
 
 		</div>
 
@@ -606,23 +678,31 @@ if(!isset($_SESSION["id"]))
                             <div class="input-group">
 								<div class="custom-control custom-checkbox">
     								<input type="checkbox" class="custom-control-input" id="mon_block_booking" checked>
-    								<label class="custom-control-label" for="mon_block_booking">Mon.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    								<label class="custom-control-label" for="mon_block_booking">Mon.&nbsp;&nbsp;</label>
 								</div>
 								<div class="custom-control custom-checkbox">
     								<input type="checkbox" class="custom-control-input" id="tue_block_booking">
-    								<label class="custom-control-label" for="tue_block_booking">Tue.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    								<label class="custom-control-label" for="tue_block_booking">Tue.&nbsp;&nbsp;</label>
 								</div>
 								<div class="custom-control custom-checkbox">
     								<input type="checkbox" class="custom-control-input" id="wed_block_booking">
-    								<label class="custom-control-label" for="wed_block_booking">Wed.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    								<label class="custom-control-label" for="wed_block_booking">Wed.&nbsp;&nbsp;</label>
 								</div>
 								<div class="custom-control custom-checkbox">
     								<input type="checkbox" class="custom-control-input" id="thu_block_booking">
-    								<label class="custom-control-label" for="thu_block_booking">Thu.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    								<label class="custom-control-label" for="thu_block_booking">Thu.&nbsp;&nbsp;</label>
 								</div>
 								<div class="custom-control custom-checkbox">
     								<input type="checkbox" class="custom-control-input" id="fri_block_booking">
-    								<label class="custom-control-label" for="fri_block_booking">Fri.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    								<label class="custom-control-label" for="fri_block_booking">Fri.&nbsp;&nbsp;</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+    								<input type="checkbox" class="custom-control-input" id="sat_block_booking">
+    								<label class="custom-control-label" for="sat_block_booking">Sat.&nbsp;&nbsp;</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+    								<input type="checkbox" class="custom-control-input" id="sun_block_booking">
+    								<label class="custom-control-label" for="sun_block_booking">Sun.&nbsp;&nbsp;</label>
 								</div>
                             </div>
                         </div>
