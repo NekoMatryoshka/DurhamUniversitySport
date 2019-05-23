@@ -202,7 +202,7 @@ if(!isset($_SESSION["id"]))
     <!-- nav1 -->
     <?php echo "<input type='hidden' name ='session_type' id='session_type' value='".$_SESSION["type"]."'/>"; ?>
 	<?php echo "<input type='hidden' name ='session_id' id='session_id' value='".$_SESSION["id"]."'/>"; ?>
-    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color:#742F68">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#742F68">
         <div class="container-fluid">
 
             <a class="navbar-brand" href="">
@@ -220,7 +220,7 @@ if(!isset($_SESSION["id"]))
     </nav>
 
     <!-- nav2 -->
-    <nav class="navbar sticky-top navbar-expand-lg navbar-dark py-0 py-md-0" style="background-color:#2F1F20;">
+    <nav class="navbar navbar-expand-lg navbar-dark py-0 py-md-0" style="background-color:#2F1F20;">
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
