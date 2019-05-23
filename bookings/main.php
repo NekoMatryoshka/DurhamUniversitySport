@@ -37,10 +37,12 @@ if(!isset($_SESSION["id"]))
       		
 			$('#facility').on('change',function(){				
 				var f_value = $(this).val();
-				var f_text = $("#facility option:selected").text();
+				var f_split_name = $("#facility option:selected").text();
+				var f_name = f_split_name.split("(");
+				
 				$('#f_id').val(f_value);
-				$('#f_name').val(f_text);
-				$('#f_dname').val(f_text);
+				$('#f_name').val(f_name[0]);
+				$('#f_dname').val(f_name[0]);
 				$('#calendar').fullCalendar('rerenderEvents');		
       		  	 
 				if(f_value =="all"){
@@ -403,7 +405,8 @@ if(!isset($_SESSION["id"]))
 				var m_id = $("#member").val();
 				var m_name = $("#member option:selected").text();
 				var f_id = $("#facility").val();
-				var f_name = $("#facility option:selected").text();
+				var f_split_name = $("#facility option:selected").text();
+				var f_name = f_split_name.split("(");
 				var start_time = $("#start_time").val();
 				var end_time = $("#end_time").val();
 				var capacity = $('#capacity').val();
@@ -416,7 +419,7 @@ if(!isset($_SESSION["id"]))
 						m_id:m_id,
 						m_name:m_name,
 						f_id:f_id,
-						f_name:f_name,
+						f_name:f_name[0],
 						capacity:capacity,
 						date:cdate,
 						start_time:start_time,
