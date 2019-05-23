@@ -397,31 +397,6 @@ if(!isset($_SESSION["id"]))
 					}
 				});
 			})
-
-			// $('#search').keyup(function(){
-				
-				
-			// 	var search = $(this).val();
-
-			// 	$('#booking_table tr').each(function(){
-			// 		var isInvisible = true;
-
-   			// 		$(this).find('td').each(function(){
-
-			// 			if($(this).attr('id') == "facility" || $(this).attr('id') == "user") {
-			// 				if ($(this).html().includes(search)) {
-			// 					isInvisible = false;
-			// 				}
-			// 			}
-						
-    		// 		});
-
-			// 		if (isInvisible && $(this).attr('id')!='title'){
-			// 			$(this).hide();
-			// 		}
-			// 	})
-
-			// });
 						
 			$('#submit').click(function(){
 				
@@ -572,7 +547,8 @@ if(!isset($_SESSION["id"]))
 				?>
     			</div>
   			</div>
-
+			<br>
+			<h5> Please Press the time slot to book. </h3> 
 			<!-- calendar -->
 			<input type="hidden" id="capacity">
 			<input type="hidden" id="duration">
