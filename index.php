@@ -737,7 +737,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label class="col-form-label">ID</label>
+                            <label class="col-form-label">ID or Email</label>
                             <input type="text" class="form-control" id="id_sign_in" maxlength="50"
                                 placeholder="ID" />
                         </div>
