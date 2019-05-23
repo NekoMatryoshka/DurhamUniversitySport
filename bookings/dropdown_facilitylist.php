@@ -12,7 +12,7 @@
 	{
 		foreach($result as $row)
 		{
-			$output .= '<option value="'.$row["id"].'">'.$row["name"]." (Capacity: ".$row["capacity"].")".'</option>';
+			$output .= '<option value="'.$row["id"].'">'.$row["name"]." ( Capacity: ".$row["capacity"]." )".'</option>';
 		}
 	}
 	echo $output;
