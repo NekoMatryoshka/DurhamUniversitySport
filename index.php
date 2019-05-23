@@ -92,7 +92,7 @@
             validationPass(["#id_sign_in", "#password_sign_in"]);
 
             if (id.length <= 0) {
-                validationMessage('#id_sign_in', "Please enter a valid ID or Email.")
+                validationMessage('#id_sign_in', "Please enter a valid email.")
                 return;
 
             } else if (password.length <= 0) {
@@ -111,10 +111,9 @@
                 },
                 success: function(data) {
                     if (data == "success") {
-                        alert("Login Success");
                         location.reload(true);
                     } else {
-                        alert("Invalid ID(Email) or Password");
+                        alert("Invalid ID or Password");
                     }
                 }
             });
@@ -183,7 +182,7 @@
                         alert("Your account is successfully created");
                         window.location.href = "/DUS/index.php";
                     } else if (data == "fail") {
-                        alert("Your ID or E-mail already exists");
+                        alert("Your ID or E-mainl already exists");
                         $('#id_sign_up').val("");
                     } else {
                         alert("Confirmation code uncorrect");
@@ -733,7 +732,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label class="col-form-label">ID or Email</label>
+                            <label class="col-form-label">ID</label>
                             <input type="text" class="form-control" id="id_sign_in" maxlength="50"
                                 placeholder="ID" />
                         </div>

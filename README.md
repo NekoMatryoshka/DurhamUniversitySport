@@ -1,28 +1,28 @@
-# Web Tech Summative Assignment
+# Software Engineering Project
+
+This is the assignment deliverables of Software Engieering by Group 9, containing all source code, testing cases, presentation materials anda database dump file.
 
 ----
 
 ## Information
 
-* Course Name: MSc Web Technology COMP41420
-* Module Coordinator: Gregory J. Marler
-* Student Anonymous Marking Code: Z0141503
+* Course Name: Software Engineering for the Internet (2018-19) COMP50315
+* Module Coordinator: Dr Sarah Drummond, Professor David Budgen
+* Group Number: 9
+* Group Members: Mohammed Al-Azman, Qian Chen, Yanlin Jiang, Jiayou Wang, Junyoun Won
 
 ----
 
-## Item Specification
+## Code Repository (BitBucket) Accessing URL
 
-* `Database\ER Diagram.pdf`: ER Diagram of the database
-* `Database\Xqprj55_webtech.sql`: SQL file including table structure and initial data
-* `Report\Report.pdf`: Reflective Report if this project
-* `Source Code\WebTech.zip`: All source code
+https://bitbucket.org/sei_group9/dus/src/master/
 
 ----
 
 ## Prerequisite
 
 * PHP 7.1 or higher
-* The project uses mySQL server of Durham University
+* MySQL Server (Please use dump file in DB folder to create database, and modify accessing info in DB_Connection.php)
 
 ----
 
@@ -30,7 +30,6 @@
 
 | Username | Password    | Type    |
 | -------- | ----------- | ------- |
-| manager  | managerpass | manager |
-| manager1 | managerpass | manager |
-| member   | memberpass  | member  |
-| member1  | memberpass  | member  |
+| jiayou   | jiayou      | user    |
+| admin    | 1234        | admin   |
+

@@ -15,7 +15,7 @@
 	if(isset($_POST["email"])) {
 	
 		$query="
-		SELECT * FROM members WHERE email = '".$_POST['email']."' OR m_id = '".$_POST['id']."'
+		SELECT * FROM members WHERE email = '".$_POST['email']."'
 		";
 	
 		$statement = $connect->prepare($query);
